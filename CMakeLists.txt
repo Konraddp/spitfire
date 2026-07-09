@@ -44,10 +44,10 @@ add_executable (tpcc ${TPCC_SRC_FILES} ${BUF_MGR_SRC_FILES})
 
 #target_link_libraries(buf_mgr_unit_test tbb pthread tcmalloc)
 
-target_link_libraries(btree_unit_test tbb pthread tcmalloc)
+target_link_libraries(btree_unit_test tbb pthread)
 
-target_link_libraries (txn_unit_test tbb pthread tcmalloc)
+target_link_libraries (txn_unit_test tbb pthread)
 
-target_link_libraries (ycsb tbb pthread tcmalloc)
+target_link_libraries (ycsb tbb pthread)
 
-target_link_libraries (tpcc tbb pthread tcmalloc)
+target_link_libraries (tpcc tbb pthread)
