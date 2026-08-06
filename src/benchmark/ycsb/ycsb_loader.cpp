@@ -147,8 +147,17 @@ void LoadYCSBRows(ConcurrentBufferManager *buf_mgr, const int begin_rowid, const
         for (; rowid < next_batch_rowid; rowid++) {
             YCSBTuple tuple;
             tuple.key = rowid;
-            for (int i = 0; i < COLUMN_COUNT; ++i)
+            for (int i = 0; i < COLUMN_COUNT; ++i) {
                 memset(tuple.cols[i], 0, sizeof(tuple.cols[i]));
+                if (state.cardinality > 0) {
+                    // Deterministic value from a pool of `cardinality` distinct
+                    // strings. Deterministic (not random) so that separate runs
+                    // load byte-identical data — required for cross-validation
+                    // between compression modes.
+                    uint32_t v = (uint32_t)((rowid * 2654435761u + i * 40503u) % state.cardinality);
+                    snprintf(tuple.cols[i], sizeof(tuple.cols[i]), "C%d_V%08u_", i, v);
+                }
+            }
 
             InsertExecutor<uint64_t, YCSBTuple> executor(*user_table, tuple, txn, buf_mgr);
             auto res = executor.Execute();
