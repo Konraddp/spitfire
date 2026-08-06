@@ -18,7 +18,6 @@
 
 #include "benchmark/ycsb/ycsb_configuration.h"
 #include "util/logger.h"
-#include "../../../include/benchmark/ycsb/ycsb_configuration.h"
 
 namespace spitfire {
 namespace benchmark {
@@ -55,6 +54,8 @@ void Usage(FILE *out) {
           "   -s --shuffle_keys      :  whether to shuffle keys at startup (Default: fasle)\n"
           "   -t --enable_hymem      :  whether to enable HyMem settings"
           "   -X --admission_set_sz  :  size of the admission queue in HyMem settings in percentage of # buffer pages in NVM\n"
+          "   -C --comp_mode         :  compression mode: off (default) | A (full decode) | B (selective decode)\n"
+          "   -K --cardinality       :  # of distinct values per column (0 = zero-fill, vanilla)\n"
   );
 }
 
@@ -87,6 +88,8 @@ static struct option opts[] = {
     { "shuffle_keys", optional_argument, NULL, 's' },
     { "enable_hymem", optional_argument, NULL, 't' },
     { "admission_set_sz", optional_argument, NULL, 'X' },
+    { "comp_mode", optional_argument, NULL, 'C' },
+    { "cardinality", optional_argument, NULL, 'K' },
     { NULL, 0, NULL, 0 }
 };
 
@@ -185,13 +188,24 @@ void ParseArguments(int argc, char *argv[], configuration &state) {
   // Parse args
   while (1) {
     int idx = 0;
-    int c = getopt_long(argc, argv, "hemsALMItk:d:p:b:c:o:X:u:z:l:y:U:B:D:Q:Y:P:W:E:R:T:J:", opts, &idx);
+    int c = getopt_long(argc, argv, "hemsALMItk:d:p:b:c:o:X:u:z:l:y:U:B:D:Q:Y:P:W:E:R:T:J:C:K:", opts, &idx);
 
     if (c == -1) break;
 
     switch (c) {
       case 'M':
         state.bp_config.enable_mini_page = true;
+        break;
+      case 'C': {
+        std::string m = optarg;
+        if      (m == "off") state.comp_mode = 0;
+        else if (m == "A")   state.comp_mode = 1;
+        else if (m == "B")   state.comp_mode = 2;
+        else { LOG_ERROR("Invalid compression mode :: %s (use off/A/B)", optarg); exit(1); }
+        break;
+      }
+      case 'K':
+        state.cardinality = atoi(optarg);
         break;
       case 'I':
         state.bp_config.enable_direct_io = true;

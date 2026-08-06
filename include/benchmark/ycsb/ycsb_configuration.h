@@ -127,6 +127,10 @@ public:
     bool enable_hymem = false;
 
     double admission_set_size = 0.1;
+    // compression mode: 0 = off (vanilla), 1 = Mode A (full decode), 2 = Mode B (selective)
+    int comp_mode = 0;
+    // cardinality: number of distinct values per column (0 = vanilla zero-fill)
+    int cardinality = 0;
 };
 
 extern configuration state;
