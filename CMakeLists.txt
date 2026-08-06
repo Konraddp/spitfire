@@ -24,7 +24,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.2 -fno-omit-frame-pointer")
 include_directories(include)
 include_directories(misc)
 
-file(GLOB_RECURSE BUF_MGR_SRC_FILES src/buf/logging.cpp src/engine/*.cpp src/buf/*.cpp src/util/*.cpp misc/murmur/*.cpp)
+file(GLOB_RECURSE BUF_MGR_SRC_FILES src/buf/logging.cpp src/engine/*.cpp src/buf/*.cpp src/util/*.cpp misc/murmur/*.cpp src/compression/*.cpp)
 
 file(GLOB_RECURSE YCSB_SRC_FILES src/benchmark/minimizer.cpp src/benchmark/ycsb/*.cpp)
 
