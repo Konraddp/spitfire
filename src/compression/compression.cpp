@@ -1,5 +1,5 @@
 // ============================================================================
-// compression.cpp: implementation of the NVM-aware dictionary compression
+// compression.cpp — dictionary compression on B+tree leaf pages
 // ============================================================================
 #include "compression/compression.h"
 
@@ -8,53 +8,55 @@
 namespace spitfire {
 namespace compression {
 
-// The one global dictionary set for the user table.
 DictionarySet g_dicts;
 
-// ---------------------------------------------------------------------------
-void BuildDictionary(const uint8_t* raw_page) {
-    const auto* tuples = reinterpret_cast<const YCSBTuple*>(raw_page);
-    for (size_t t = 0; t < kTuplesPerPage; t++)
-        for (size_t c = 0; c < kNumColumns; c++)
-            g_dicts.cols[c].GetOrInsert(tuples[t].cols[c]);
+// Helper: pointer to the columns of entry `e` inside a RAW leaf page.
+static inline const char *RawEntryCols(const uint8_t *raw_leaf, size_t e, size_t col) {
+    return reinterpret_cast<const char *>(
+        raw_leaf + kDataOff + e * kEntrySize + kColsOffInEntry + col * kColumnSize);
 }
 
 // ---------------------------------------------------------------------------
-void EncodePage(const uint8_t* raw_page, uint8_t* comp_page) {
-    const auto* tuples = reinterpret_cast<const YCSBTuple*>(raw_page);
+void BuildDictionary(const uint8_t *raw_leaf, uint16_t num_entries) {
+    for (size_t e = 0; e < num_entries && e < kEntriesPerLeaf; e++)
+        for (size_t c = 0; c < kNumColumns; c++)
+            g_dicts.cols[c].GetOrInsert(RawEntryCols(raw_leaf, e, c));
+}
+
+// ---------------------------------------------------------------------------
+void EncodeLeaf(const uint8_t *raw_leaf, uint16_t num_entries, uint8_t *comp_leaf) {
     const uint8_t idw = g_dicts.RequiredIdWidth();
     const CompLayout L(idw);
     assert(L.total <= kPageSize);
 
-    memset(comp_page, 0, kPageSize);
-    auto* hdr = reinterpret_cast<CompHeader*>(comp_page);
-    hdr->magic      = kCompressedMagic;
-    hdr->num_tuples = (uint16_t)kTuplesPerPage;
-    hdr->id_width   = idw;
-    hdr->flags      = 0;
+    // node header (NodeBase + next) stays byte-identical at its position
+    memcpy(comp_leaf, raw_leaf, kLeafHeaderSize);
+    memset(comp_leaf + kLeafHeaderSize, 0, kPageSize - kLeafHeaderSize);
 
-    // raw 44-byte prefixes, verbatim
-    for (size_t t = 0; t < kTuplesPerPage; t++)
-        memcpy(comp_page + L.prefixes_off + t * kPrefixSize,
-               raw_page + t * kTupleSize, kPrefixSize);
+    auto *hdr = reinterpret_cast<CompHeader *>(comp_leaf + L.hdr_off);
+    hdr->magic       = kCompressedMagic;
+    hdr->num_entries = num_entries;
+    hdr->id_width    = idw;
+    hdr->flags       = 0;
 
-    // dictionary IDs
-    for (size_t t = 0; t < kTuplesPerPage; t++)
+    for (size_t e = 0; e < num_entries && e < kEntriesPerLeaf; e++) {
+        // raw prefix: pair key + BaseTuple + tuple.key  (52 B)
+        memcpy(comp_leaf + L.prefixes_off + e * kPrefixSize,
+               raw_leaf + kDataOff + e * kEntrySize, kPrefixSize);
+        // dictionary ids
         for (size_t c = 0; c < kNumColumns; c++) {
-            uint32_t id = g_dicts.cols[c].GetOrInsert(tuples[t].cols[c]);
-            memcpy(comp_page + L.ids_off + (t * kNumColumns + c) * idw, &id, idw);
+            uint32_t id = g_dicts.cols[c].GetOrInsert(RawEntryCols(raw_leaf, e, c));
+            memcpy(comp_leaf + L.ids_off + (e * kNumColumns + c) * idw, &id, idw);
         }
-
-    // tail metadata copy
-    memcpy(comp_page + L.tail_off,     raw_page + kNextPagePidOff, 8);
-    memcpy(comp_page + L.tail_off + 8, raw_page + kNumTuplesOff,   2);
+    }
 }
 
 // ---------------------------------------------------------------------------
-void DecodeRange(const uint8_t* comp_page, size_t off, size_t size, char* out) {
-    const auto* hdr = reinterpret_cast<const CompHeader*>(comp_page);
+void DecodeRange(const uint8_t *comp_leaf, size_t off, size_t size, char *out) {
+    const auto *hdr = reinterpret_cast<const CompHeader *>(comp_leaf + kLeafHeaderSize);
     assert(hdr->magic == kCompressedMagic);
     const uint8_t idw = hdr->id_width;
+    const size_t  n   = hdr->num_entries;
     const CompLayout L(idw);
 
     size_t cur = off;
@@ -62,47 +64,53 @@ void DecodeRange(const uint8_t* comp_page, size_t off, size_t size, char* out) {
     assert(end <= kPageSize);
 
     while (cur < end) {
-        if (cur >= kTuplesRegionEnd) {
-            // tail region: metadata copy or padding
-            for (size_t p = cur; p < end; p++) {
-                if (p >= kNextPagePidOff && p < kNextPagePidOff + 8)
-                    out[p - off] = comp_page[L.tail_off + (p - kNextPagePidOff)];
-                else if (p >= kNumTuplesOff && p < kNumTuplesOff + 2)
-                    out[p - off] = comp_page[L.tail_off + 8 + (p - kNumTuplesOff)];
-                else
-                    out[p - off] = 0;
-            }
+        // ---- node header region: raw, in place ----
+        if (cur < kDataOff) {
+            size_t k = std::min(end, kDataOff) - cur;
+            memcpy(out + (cur - off), comp_leaf + cur, k);
+            cur += k;
+            continue;
+        }
+        // ---- trailing padding ----
+        if (cur >= kDataEnd) {
+            memset(out + (cur - off), 0, end - cur);
             break;
         }
 
-        size_t tuple_idx = cur / kTupleSize;
-        size_t rem       = cur % kTupleSize;
-        size_t tuple_end = (tuple_idx + 1) * kTupleSize;
-        size_t stop      = std::min(end, std::min(tuple_end, kTuplesRegionEnd));
+        // ---- entry region ----
+        size_t rel        = cur - kDataOff;
+        size_t entry_idx  = rel / kEntrySize;
+        size_t rem        = rel % kEntrySize;
+        size_t entry_end  = kDataOff + (entry_idx + 1) * kEntrySize;
+        size_t stop       = std::min(end, std::min(entry_end, kDataEnd));
+
+        // entries beyond count are unused -> zeros
+        if (entry_idx >= n) {
+            memset(out + (cur - off), 0, stop - cur);
+            cur = stop;
+            continue;
+        }
 
         while (cur < stop) {
             if (rem < kPrefixSize) {
-                // raw prefix bytes
-                size_t n = std::min(stop - cur, kPrefixSize - rem);
+                size_t k = std::min(stop - cur, kPrefixSize - rem);
                 memcpy(out + (cur - off),
-                       comp_page + L.prefixes_off + tuple_idx * kPrefixSize + rem, n);
-                cur += n; rem += n;
-            } else if (rem >= kPrefixSize + kNumColumns * kColumnSize) {
-                // per-tuple alignment padding (1044..1047): zeros
-                size_t n = std::min(stop - cur, kTupleSize - rem);
-                memset(out + (cur - off), 0, n);
-                cur += n; rem += n;
+                       comp_leaf + L.prefixes_off + entry_idx * kPrefixSize + rem, k);
+                cur += k; rem += k;
+            } else if (rem >= kColsOffInEntry + kNumColumns * kColumnSize) {
+                size_t k = std::min(stop - cur, kEntrySize - rem);
+                memset(out + (cur - off), 0, k);      // per-entry alignment pad
+                cur += k; rem += k;
             } else {
-                // column bytes: read only the id, look up the value
-                size_t col        = (rem - kPrefixSize) / kColumnSize;
-                size_t within_col = (rem - kPrefixSize) % kColumnSize;
+                size_t col        = (rem - kColsOffInEntry) / kColumnSize;
+                size_t within_col = (rem - kColsOffInEntry) % kColumnSize;
                 uint32_t id = 0;
-                memcpy(&id, comp_page + L.ids_off +
-                            (tuple_idx * kNumColumns + col) * idw, idw);
-                const char* value = g_dicts.cols[col].id_to_value[id].data();
-                size_t n = std::min(stop - cur, kColumnSize - within_col);
-                memcpy(out + (cur - off), value + within_col, n);
-                cur += n; rem += n;
+                memcpy(&id, comp_leaf + L.ids_off +
+                            (entry_idx * kNumColumns + col) * idw, idw);
+                const char *value = g_dicts.cols[col].id_to_value[id].data();
+                size_t k = std::min(stop - cur, kColumnSize - within_col);
+                memcpy(out + (cur - off), value + within_col, k);
+                cur += k; rem += k;
             }
         }
     }

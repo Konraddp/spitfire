@@ -23,6 +23,7 @@
 #include "engine/executor.h"
 #include "benchmark/ycsb/ycsb_loader.h"
 #include "benchmark/ycsb/ycsb_configuration.h"
+#include "compression/compaction.h"
 
 namespace spitfire {
 std::vector<BaseDataTable*> database_tables;
@@ -203,7 +204,7 @@ void LoadYCSBDatabase(ConcurrentBufferManager *buf_mgr) {
 
     //LOG_INFO("%sTABLE SIZES%s", peloton::GETINFO_HALF_THICK_LINE.c_str(), peloton::GETINFO_HALF_THICK_LINE.c_str());
     LOG_INFO("user count = %lu", tuple_count);
-
+    compression::CompactYCSBTable(buf_mgr);
 }
 
 }  // namespace ycsb

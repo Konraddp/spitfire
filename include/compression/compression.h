@@ -1,14 +1,33 @@
 // ============================================================================
-// compression.h: NVM-aware dictionary compression for Spitfire
+// compression.h — NVM-aware dictionary compression for Spitfire
 // ============================================================================
-// Ported from the standalone prototype (spitfire_rep.cpp, Stage 1).
-// Uses Spitfire's REAL YCSBTuple type; the static_asserts guard that the
-// layout the prototype was verified against still holds. If any assert fires
-// at compile time, the layout has changed and the offset math must be revisited.
+// v3: targets B+TREE LEAF PAGES, not heap pages.
 //
-// Scope (Stage 2): read-only workload. Dictionary is built once during the
-// post-load compaction pass and is IMMUTABLE afterwards (no locking needed on
-// the read path). A write path for compressed pages is future work.
+// Discovery (Stage 2, step 4): Spitfire's YCSB table uses a ClusteredIndex,
+// i.e. the tuples live in the B+tree leaves. The PartitionedHeapTable only
+// stores OLD versions and is empty after a fresh load. The compaction pass
+// therefore walks BTreeLeafNode pages.
+//
+// Leaf layout (verified against btreeolc.h):
+//   [0,  16)      NodeBase   lsn(8) type(2) count(2) + 4 pad   <- kept RAW
+//   [16, 24)      next       leaf chain pointer                <- kept RAW
+//   [24, 15864)   data[15]   std::pair<uint64_t, YCSBTuple>, 1056 B each
+//   [15864,16384) padding    520 B
+//
+// Each entry:
+//   [0,   8)  pair key (search key)   \
+//   [8,  48)  BaseTuple prefix         >  52 B kept RAW  -> the B+tree can
+//   [48, 52)  YCSBTuple::key          /      still binary-search a compressed
+//   [52, 1052) 10 columns x 100 B      -> dictionary-encoded    leaf page!
+//   [1052,1056) alignment padding
+//
+// Compressed image:
+//   [0,  24)  node header, untouched at its original position
+//   [24, 32)  CompHeader
+//   [32, ...) prefixes[15 * 52], then ids[15 * 10 * id_width]
+//
+// Scope: read-only workload. Dictionary built once by the compaction pass,
+// immutable afterwards -> no locking on the read path.
 // ============================================================================
 
 #pragma once
@@ -20,6 +39,7 @@
 #include <unordered_map>
 #include <string>
 #include <algorithm>
+#include <utility>
 
 #include "benchmark/ycsb/ycsb_configuration.h"   // YCSBTuple, COLUMN_COUNT
 #include "buf/buf_mgr.h"                          // kPageSize
@@ -29,42 +49,45 @@ namespace compression {
 
 using benchmark::ycsb::YCSBTuple;
 
-// ---- Verified layout constants (measured via sizecheck on the server) ------
-constexpr size_t kColumnSize    = 100;                       // per-column bytes
-constexpr size_t kNumColumns    = COLUMN_COUNT;              // = 10
-constexpr size_t kTupleSize     = sizeof(YCSBTuple);         // must be 1048
-constexpr size_t kPrefixSize    = 44;                        // BaseTuple(40)+key(4)
-constexpr size_t kTuplesPerPage = (kPageSize - 2 - 8) / kTupleSize;  // = 15
+// ---- Verified layout constants ---------------------------------------------
+constexpr size_t kColumnSize  = 100;
+constexpr size_t kNumColumns  = COLUMN_COUNT;                       // 10
+constexpr size_t kTupleSize   = sizeof(YCSBTuple);                  // 1048
+constexpr size_t kEntrySize   = sizeof(std::pair<uint64_t, YCSBTuple>);  // 1056
+constexpr size_t kPairKeySize = 8;
+constexpr size_t kPrefixSize  = kPairKeySize + 44;                  // 52
+constexpr size_t kColsOffInEntry = kPrefixSize;                     // 52
+
+// NodeBase(16) + next(8); verified against btreeolc.h
+constexpr size_t kLeafHeaderSize = 24;
+constexpr size_t kEntriesPerLeaf = (kPageSize - kLeafHeaderSize) / kEntrySize; // 15
+constexpr size_t kDataOff        = kLeafHeaderSize;                 // 24
+constexpr size_t kDataEnd        = kDataOff + kEntriesPerLeaf * kEntrySize;    // 15864
 
 static_assert(sizeof(YCSBTuple) == 1048, "tuple layout changed — revisit offsets");
-static_assert(kTuplesPerPage == 15,      "tuples-per-page changed");
-
-// HeapTablePage: tuples[] at offset 0, metadata at the END of the page
-constexpr size_t kTuplesRegionEnd = kTuplesPerPage * kTupleSize;     // 15720
-constexpr size_t kNextPagePidOff  = kTuplesRegionEnd;                // 15720
-constexpr size_t kNumTuplesOff    = kNextPagePidOff + 8;             // 15728
+static_assert(kEntrySize == 1056,        "pair layout changed — revisit offsets");
+static_assert(kEntriesPerLeaf == 15,     "entries-per-leaf changed");
 
 // ---- Compressed page header -------------------------------------------------
 struct CompHeader {
     uint32_t magic;
-    uint16_t num_tuples;
+    uint16_t num_entries;
     uint8_t  id_width;      // 1, 2 or 4
     uint8_t  flags;
 };
 static_assert(sizeof(CompHeader) == 8, "header must be 8 bytes");
 constexpr uint32_t kCompressedMagic = 0xC0DEC0DE;
 
-// Computed positions inside the compressed image
 struct CompLayout {
+    size_t hdr_off;         // = kLeafHeaderSize (24)
     size_t prefixes_off;
     size_t ids_off;
-    size_t tail_off;
     size_t total;
     explicit CompLayout(uint8_t idw) {
-        prefixes_off = sizeof(CompHeader);
-        ids_off      = prefixes_off + kTuplesPerPage * kPrefixSize;
-        tail_off     = ids_off + kTuplesPerPage * kNumColumns * (size_t)idw;
-        total        = tail_off + 8 /*pid*/ + 2 /*num_tuples*/;
+        hdr_off      = kLeafHeaderSize;
+        prefixes_off = hdr_off + sizeof(CompHeader);
+        ids_off      = prefixes_off + kEntriesPerLeaf * kPrefixSize;
+        total        = ids_off + kEntriesPerLeaf * kNumColumns * (size_t)idw;
     }
 };
 
@@ -98,27 +121,23 @@ struct DictionarySet {
     }
 };
 
-// ---- Global dictionary (one per table, immutable after load) ----------------
-// Defined in compression.cpp. Built by the post-load compaction pass, read by
-// both decode paths. Read-only after load -> no synchronization on reads.
 extern DictionarySet g_dicts;
 
 // ---- API --------------------------------------------------------------------
-// Pass 1 of compaction: register all values of one raw page into g_dicts.
-void BuildDictionary(const uint8_t* raw_page);
+// Pass 1: register all column values of one raw leaf page.
+void BuildDictionary(const uint8_t* raw_leaf, uint16_t num_entries);
 
-// Pass 2 of compaction: write the compressed image of one raw page into
-// comp_page (may alias a scratch buffer; caller copies it back in place).
-void EncodePage(const uint8_t* raw_page, uint8_t* comp_page);
+// Pass 2: build the compressed image of one raw leaf into comp_leaf.
+void EncodeLeaf(const uint8_t* raw_leaf, uint16_t num_entries, uint8_t* comp_leaf);
 
-// The unified decoder. Reconstructs original bytes [off, off+size) into out.
-//   Mode A: DecodeRange(page, 0, kPageSize, frame)
-//   Mode B: DecodeRange(page, pos*kTupleSize, kTupleSize, scratch)
-void DecodeRange(const uint8_t* comp_page, size_t off, size_t size, char* out);
+// Reconstructs original bytes [off, off+size) of the leaf into out.
+//   Mode A: DecodeRange(leaf, 0, kPageSize, frame)
+//   Mode B: DecodeRange(leaf, entry_off, kEntrySize, scratch)
+void DecodeRange(const uint8_t* comp_leaf, size_t off, size_t size, char* out);
 
-// Convenience: is this raw page already in compressed form?
-inline bool IsCompressed(const uint8_t* page) {
-    return reinterpret_cast<const CompHeader*>(page)->magic == kCompressedMagic;
+inline bool IsCompressed(const uint8_t* leaf) {
+    return reinterpret_cast<const CompHeader*>(leaf + kLeafHeaderSize)->magic
+           == kCompressedMagic;
 }
 
 }  // namespace compression

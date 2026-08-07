@@ -1741,6 +1741,47 @@ public:
         }
         return root_ph->pid;
     }
+ 
+    void ForEachLeaf(std::function<void(pid_t, char *)> leaf_processor) {
+        // --- descend to the leftmost leaf ---
+        PageDesc *node_desc = root_node_desc.load();
+        PageAccessor node_accessor = mgr->GetPageAccessorFromDesc(node_desc);
+        NodeBase node_base = GetNodeBase(node_accessor);
+ 
+        while (node_base.type == InnerNode) {
+            auto inner = reinterpret_cast<BTreeInnerNode *>(node_desc->page);
+            auto pos = inner->lowerBound(std::numeric_limits<Key>::min(),
+                                         node_accessor, node_base);
+            pid_t child_pid = inner->GetKeyValue(pos, node_accessor).second;
+            assert(child_pid != kInvalidPID);
+            Status s = mgr->Get(child_pid, node_accessor,
+                                ConcurrentBufferManager::PageOPIntent::INTENT_READ);
+            assert(s.ok());
+            node_desc = node_accessor.GetPageDesc();
+            node_base = GetNodeBase(node_accessor);
+        }
+ 
+        // --- follow the leaf chain ---
+        pid_t leaf_pid = node_desc->pid;
+        mgr->Put(node_desc);
+ 
+        while (leaf_pid != kInvalidPID) {
+            PageAccessor leaf_accessor;
+            Status s = mgr->Get(leaf_pid, leaf_accessor,
+                                ConcurrentBufferManager::PageOPIntent::INTENT_WRITE);
+            assert(s.ok());
+            PageDesc *leaf_desc = leaf_accessor.GetPageDesc();
+ 
+            pid_t next_leaf_pid = BTreeLeafNode::GetNextPtr(leaf_accessor);
+ 
+            auto slice = leaf_accessor.PrepareForWrite(0, kPageSize);
+            leaf_processor(leaf_pid, const_cast<char *>(slice.data()));
+            leaf_accessor.FinishAccess();
+ 
+            mgr->Put(leaf_desc);
+            leaf_pid = next_leaf_pid;
+        }
+    }
 
     struct BTreeStats {
         size_t num_leaves = 0;

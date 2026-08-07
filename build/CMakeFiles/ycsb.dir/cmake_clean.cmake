@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o.d"
   "CMakeFiles/ycsb.dir/src/benchmark/minimizer.cpp.o"
   "CMakeFiles/ycsb.dir/src/benchmark/minimizer.cpp.o.d"
+  "CMakeFiles/ycsb.dir/src/benchmark/ycsb/compaction.cpp.o"
+  "CMakeFiles/ycsb.dir/src/benchmark/ycsb/compaction.cpp.o.d"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb.cpp.o"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb.cpp.o.d"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_configuration.cpp.o"

@@ -84,6 +84,10 @@ public:
         return btree.GetStats();
     }
 
+    void ForEachLeaf(std::function<void(pid_t, char *)> p) {
+        btree.ForEachLeaf(p);
+    }
+
 private:
     ConcurrentBufferManager *mgr;
     BTree<Key, T> btree;
@@ -545,7 +549,56 @@ public:
         for (auto pid : unlinked_pages) {
             mgr->FreePage(pid);
         }
+        }
+        // ============================================================================
+// SNIPPET A — insert into class HeapTable, PUBLIC section
+// (right after the existing Scan(...) methods, before "private:" at line ~734)
+// ============================================================================
+// Page-granular iteration over all data pages of this table.
+// Added for the compression compaction pass. Mirrors Scan()'s latch-coupling
+// walk, but hands the caller the whole page instead of individual tuples.
+// The pass runs single-threaded after loading, so a shared latch suffices.
+ 
+    void ForEachPage(std::function<void(pid_t, char *)> page_processor) {
+        auto prev_page_pid = GetMetaPagePid();
+        pid_t cur_page_pid = kInvalidPID;
+        HeapTablePage *hp = nullptr;          // static-method dispatch only
+        PageDesc *prev_page_desc = nullptr;
+        PageDesc *cur_page_desc = nullptr;
+ 
+        Status s = mgr->Get(prev_page_pid, prev_page_desc,
+                            ConcurrentBufferManager::PageOPIntent::INTENT_READ);
+        assert(s.ok());
+        prev_page_desc->LatchShared();
+        {
+            auto prev_page_accessor = mgr->GetPageAccessorFromDesc(prev_page_desc);
+            cur_page_pid = hp->GetNextPagePid(prev_page_accessor);
+        }
+ 
+        while (cur_page_pid != kInvalidPID) {
+            s = mgr->Get(cur_page_pid, cur_page_desc,
+                         ConcurrentBufferManager::PageOPIntent::INTENT_WRITE);
+            assert(s.ok());
+            cur_page_desc->LatchShared();
+            auto cur_page_accessor = mgr->GetPageAccessorFromDesc(cur_page_desc);
+            pid_t next_page_pid = hp->GetNextPagePid(cur_page_accessor);
+ 
+            // release previous page only after current one is latched
+            prev_page_desc->UnlatchShared();
+            mgr->Put(prev_page_desc);
+ 
+            // hand the full raw page to the processor
+            auto slice = cur_page_accessor.PrepareForWrite(0, kPageSize);
+            page_processor(cur_page_pid, const_cast<char *>(slice.data()));
+            cur_page_accessor.FinishAccess();
+ 
+            prev_page_desc = cur_page_desc;
+            cur_page_pid = next_page_pid;
+        }
+        prev_page_desc->UnlatchShared();
+        mgr->Put(prev_page_desc);
     }
+    
 
 private:
 
@@ -721,6 +774,17 @@ public:
         }
     }
 
+    // ============================================================================
+// SNIPPET B — insert into class PartitionedHeapTable, PUBLIC section
+// (right after the existing Scan(...) methods that loop over parts[i])
+// ============================================================================
+// Iterates all data pages of every partition.
+ 
+    void ForEachPage(std::function<void(pid_t, char *)> page_processor) {
+        for (int i = 0; i < num_parts; ++i) {
+            parts[i].ForEachPage(page_processor);
+        }
+    }
 
     pid_t GetMetaPagePid() {
         return meta_page_pid;

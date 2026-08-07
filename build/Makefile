@@ -444,6 +444,30 @@ src/benchmark/tpcc/tpcc_workload.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tpcc.dir/build.make CMakeFiles/tpcc.dir/src/benchmark/tpcc/tpcc_workload.cpp.s
 .PHONY : src/benchmark/tpcc/tpcc_workload.cpp.s
 
+src/benchmark/ycsb/compaction.o: src/benchmark/ycsb/compaction.cpp.o
+.PHONY : src/benchmark/ycsb/compaction.o
+
+# target to build an object file
+src/benchmark/ycsb/compaction.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/compaction.cpp.o
+.PHONY : src/benchmark/ycsb/compaction.cpp.o
+
+src/benchmark/ycsb/compaction.i: src/benchmark/ycsb/compaction.cpp.i
+.PHONY : src/benchmark/ycsb/compaction.i
+
+# target to preprocess a source file
+src/benchmark/ycsb/compaction.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/compaction.cpp.i
+.PHONY : src/benchmark/ycsb/compaction.cpp.i
+
+src/benchmark/ycsb/compaction.s: src/benchmark/ycsb/compaction.cpp.s
+.PHONY : src/benchmark/ycsb/compaction.s
+
+# target to generate assembly for a file
+src/benchmark/ycsb/compaction.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/compaction.cpp.s
+.PHONY : src/benchmark/ycsb/compaction.cpp.s
+
 src/benchmark/ycsb/ycsb.o: src/benchmark/ycsb/ycsb.cpp.o
 .PHONY : src/benchmark/ycsb/ycsb.o
 
@@ -1110,6 +1134,9 @@ help:
 	@echo "... src/benchmark/tpcc/tpcc_workload.o"
 	@echo "... src/benchmark/tpcc/tpcc_workload.i"
 	@echo "... src/benchmark/tpcc/tpcc_workload.s"
+	@echo "... src/benchmark/ycsb/compaction.o"
+	@echo "... src/benchmark/ycsb/compaction.i"
+	@echo "... src/benchmark/ycsb/compaction.s"
 	@echo "... src/benchmark/ycsb/ycsb.o"
 	@echo "... src/benchmark/ycsb/ycsb.i"
 	@echo "... src/benchmark/ycsb/ycsb.s"

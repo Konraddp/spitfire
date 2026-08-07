@@ -292,4 +292,5 @@ CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_loader.cpp.o: \
  /vol2/pkonrad/spitfire/include/benchmark/ycsb/ycsb_loader.h \
  /vol2/pkonrad/spitfire/include/benchmark/ycsb/ycsb_configuration.h \
  /usr/include/getopt.h /usr/include/x86_64-linux-gnu/bits/getopt_ext.h \
- /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /vol2/pkonrad/spitfire/include/compression/compaction.h
