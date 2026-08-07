@@ -135,9 +135,13 @@ void EncodeLeaf(const uint8_t* raw_leaf, uint16_t num_entries, uint8_t* comp_lea
 //   Mode B: DecodeRange(leaf, entry_off, kEntrySize, scratch)
 void DecodeRange(const uint8_t* comp_leaf, size_t off, size_t size, char* out);
 
-inline bool IsCompressed(const uint8_t* leaf) {
-    return reinterpret_cast<const CompHeader*>(leaf + kLeafHeaderSize)->magic
-           == kCompressedMagic;
+inline bool IsCompressed(const uint8_t* page) {
+    constexpr uint16_t kLeafNodeType = 1;   // LeafNode in btreeolc.h
+    uint16_t type;
+    memcpy(&type, page + 8, sizeof(type));
+    if (type != kLeafNodeType) return false;
+    const auto* h = reinterpret_cast<const CompHeader*>(page + kLeafHeaderSize);
+    return h->magic == kCompressedMagic;
 }
 
 inline size_t CompressedSize(const uint8_t* leaf) {

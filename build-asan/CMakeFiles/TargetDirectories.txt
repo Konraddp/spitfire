@@ -1,0 +1,6 @@
+/vol2/pkonrad/spitfire/build-asan/CMakeFiles/btree_unit_test.dir
+/vol2/pkonrad/spitfire/build-asan/CMakeFiles/txn_unit_test.dir
+/vol2/pkonrad/spitfire/build-asan/CMakeFiles/ycsb.dir
+/vol2/pkonrad/spitfire/build-asan/CMakeFiles/tpcc.dir
+/vol2/pkonrad/spitfire/build-asan/CMakeFiles/edit_cache.dir
+/vol2/pkonrad/spitfire/build-asan/CMakeFiles/rebuild_cache.dir

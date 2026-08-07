@@ -8,6 +8,7 @@
 #include "buf/buf_mgr.h"
 #include <sstream>
 #include "compression/compression.h"
+#include <atomic>
 
 namespace spitfire {
 
@@ -639,22 +640,18 @@ Status ConcurrentBufferManager::FillDRAMPage(SharedPageDesc *shared_ph, PageDesc
                     compression::IsCompressed(reinterpret_cast<const uint8_t *>(nvm_ph->page));
  
                 if (nvm_page_compressed) {
-                    // ---- Mode A: decode the whole page NVM -> DRAM ----
-                    // Only the compressed prefix of the NVM page is read; the
-                    // decoded image is written straight into the DRAM frame
-                    // (no aliasing: source and destination are different pages).
                     assert(dram_ph->type != PageType::DRAM_MINI &&
                            "compression + mini pages not supported (run with mini pages off)");
                     compression::DecodeRange(
                         reinterpret_cast<const uint8_t *>(nvm_ph->page),
                         0, kPageSize,
                         reinterpret_cast<char *>(dram_ph->page));
-                    // the whole page is now resident
-                    dram_ph->residency_bitmap.SetAll();
-                    dram_ph->num_blocks = kPageSize / kNVMBlockSize;
-                    // count what actually crossed the bus, not the decoded size
                     bytes_copied = compression::CompressedSize(
                         reinterpret_cast<const uint8_t *>(nvm_ph->page));
+                    // publish residency only AFTER the page is fully decoded
+                    std::atomic_thread_fence(std::memory_order_release);
+                    dram_ph->residency_bitmap.SetAll();
+                    dram_ph->num_blocks = kPageSize / kNVMBlockSize;
                 } else {
                     // ---- original path: raw block copy ----
                     dram_ph->ForeachUnsetBitInBitmapByPageRange(off, size, dram_ph->residency_bitmap,
@@ -709,11 +706,13 @@ Status ConcurrentBufferManager::FillDRAMPage(SharedPageDesc *shared_ph, PageDesc
  
         if (compression::IsCompressed(reinterpret_cast<const uint8_t *>(dram_ph->page))) {
             // decode in place -> needs a scratch buffer (source == destination)
-            thread_local std::vector<char> decode_scratch(kPageSize);
+            // raw array (not std::vector): a thread_local with a non-trivial
+            // destructor crashes during TLS teardown at process exit
+            static thread_local char decode_scratch[kPageSize];
             compression::DecodeRange(
                 reinterpret_cast<const uint8_t *>(dram_ph->page),
-                0, kPageSize, decode_scratch.data());
-            memcpy(dram_ph->page, decode_scratch.data(), kPageSize);
+                0, kPageSize, decode_scratch);
+            memcpy(dram_ph->page, decode_scratch, kPageSize);
         }
         dram_ph->residency_bitmap.SetAll();
     }

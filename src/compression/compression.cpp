@@ -4,6 +4,9 @@
 #include "compression/compression.h"
 
 #include <cassert>
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
 
 namespace spitfire {
 namespace compression {
@@ -107,6 +110,20 @@ void DecodeRange(const uint8_t *comp_leaf, size_t off, size_t size, char *out) {
                 uint32_t id = 0;
                 memcpy(&id, comp_leaf + L.ids_off +
                             (entry_idx * kNumColumns + col) * idw, idw);
+
+                // diagnostic guard: an out-of-range id means we decoded a page
+                // that is not actually one of ours
+                if (col >= kNumColumns || id >= g_dicts.cols[col].id_to_value.size()) {
+                    fprintf(stderr,
+                        "DECODE ERROR: off=%zu size=%zu entry=%zu col=%zu id=%u "
+                        "dict_size=%zu hdr{magic=%08x n=%u idw=%u} node_type=%u\n",
+                        off, size, entry_idx, col, id,
+                        col < kNumColumns ? g_dicts.cols[col].id_to_value.size() : (size_t)0,
+                        hdr->magic, (unsigned)hdr->num_entries, (unsigned)idw,
+                        (unsigned)*reinterpret_cast<const uint16_t*>(comp_leaf + 8));
+                    abort();
+                }
+
                 const char *value = g_dicts.cols[col].id_to_value[id].data();
                 size_t k = std::min(stop - cur, kColumnSize - within_col);
                 memcpy(out + (cur - off), value + within_col, k);
