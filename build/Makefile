@@ -564,6 +564,30 @@ src/benchmark/ycsb/ycsb_mixed.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.s
 .PHONY : src/benchmark/ycsb/ycsb_mixed.cpp.s
 
+src/benchmark/ycsb/ycsb_validation.o: src/benchmark/ycsb/ycsb_validation.cpp.o
+.PHONY : src/benchmark/ycsb/ycsb_validation.o
+
+# target to build an object file
+src/benchmark/ycsb/ycsb_validation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o
+.PHONY : src/benchmark/ycsb/ycsb_validation.cpp.o
+
+src/benchmark/ycsb/ycsb_validation.i: src/benchmark/ycsb/ycsb_validation.cpp.i
+.PHONY : src/benchmark/ycsb/ycsb_validation.i
+
+# target to preprocess a source file
+src/benchmark/ycsb/ycsb_validation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.i
+.PHONY : src/benchmark/ycsb/ycsb_validation.cpp.i
+
+src/benchmark/ycsb/ycsb_validation.s: src/benchmark/ycsb/ycsb_validation.cpp.s
+.PHONY : src/benchmark/ycsb/ycsb_validation.s
+
+# target to generate assembly for a file
+src/benchmark/ycsb/ycsb_validation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.s
+.PHONY : src/benchmark/ycsb/ycsb_validation.cpp.s
+
 src/benchmark/ycsb/ycsb_workload.o: src/benchmark/ycsb/ycsb_workload.cpp.o
 .PHONY : src/benchmark/ycsb/ycsb_workload.o
 
@@ -1149,6 +1173,9 @@ help:
 	@echo "... src/benchmark/ycsb/ycsb_mixed.o"
 	@echo "... src/benchmark/ycsb/ycsb_mixed.i"
 	@echo "... src/benchmark/ycsb/ycsb_mixed.s"
+	@echo "... src/benchmark/ycsb/ycsb_validation.o"
+	@echo "... src/benchmark/ycsb/ycsb_validation.i"
+	@echo "... src/benchmark/ycsb/ycsb_validation.s"
 	@echo "... src/benchmark/ycsb/ycsb_workload.o"
 	@echo "... src/benchmark/ycsb/ycsb_workload.i"
 	@echo "... src/benchmark/ycsb/ycsb_workload.s"

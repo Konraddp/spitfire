@@ -188,7 +188,7 @@ void ParseArguments(int argc, char *argv[], configuration &state) {
   // Parse args
   while (1) {
     int idx = 0;
-    int c = getopt_long(argc, argv, "hemsALMItk:d:p:b:c:o:X:u:z:l:y:U:B:D:Q:Y:P:W:E:R:T:J:C:K:", opts, &idx);
+    int c = getopt_long(argc, argv, "hemsALMItVk:d:p:b:c:o:X:u:z:l:y:U:B:D:Q:Y:P:W:E:R:T:J:C:K:", opts, &idx);
 
     if (c == -1) break;
 
@@ -216,6 +216,9 @@ void ParseArguments(int argc, char *argv[], configuration &state) {
       case 'A':
         state.enable_annealing = true;
         break;
+      case 'V':
+        state.validate = true;
+        break;  
       case 't':
         state.enable_hymem = true;
         break;

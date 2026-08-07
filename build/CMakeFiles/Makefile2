@@ -139,12 +139,12 @@ CMakeFiles/txn_unit_test.dir/clean:
 CMakeFiles/ycsb.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ycsb.dir/build.make CMakeFiles/ycsb.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 "Built target ycsb"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81 "Built target ycsb"
 .PHONY : CMakeFiles/ycsb.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ycsb.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /vol2/pkonrad/spitfire/build/CMakeFiles 22
+	$(CMAKE_COMMAND) -E cmake_progress_start /vol2/pkonrad/spitfire/build/CMakeFiles 23
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ycsb.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /vol2/pkonrad/spitfire/build/CMakeFiles 0
 .PHONY : CMakeFiles/ycsb.dir/rule

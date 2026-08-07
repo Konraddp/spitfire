@@ -131,6 +131,7 @@ public:
     int comp_mode = 0;
     // cardinality: number of distinct values per column (0 = vanilla zero-fill)
     int cardinality = 0;
+    bool validate = false;
 };
 
 extern configuration state;

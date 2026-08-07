@@ -153,10 +153,24 @@ CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_mixed.cpp -o CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.s
 
+CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o: CMakeFiles/ycsb.dir/flags.make
+CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o: /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_validation.cpp
+CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o -MF CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o.d -o CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o -c /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_validation.cpp
+
+CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_validation.cpp > CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.i
+
+CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_validation.cpp -o CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.s
+
 CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o: /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_workload.cpp
 CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o -MF CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o.d -o CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o -c /vol2/pkonrad/spitfire/src/benchmark/ycsb/ycsb_workload.cpp
 
 CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o: /vol2/pkonrad/spitfire/misc/murmur/MurmurHash2.cpp
 CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o -MF CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o.d -o CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o -c /vol2/pkonrad/spitfire/misc/murmur/MurmurHash2.cpp
 
 CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o: /vol2/pkonrad/spitfire/src/buf/buf_mgr.cpp
 CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o -MF CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o.d -o CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o -c /vol2/pkonrad/spitfire/src/buf/buf_mgr.cpp
 
 CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o: /vol2/pkonrad/spitfire/src/buf/concur_buf_mgr.cpp
 CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o -MF CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o.d -o CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.o -c /vol2/pkonrad/spitfire/src/buf/concur_buf_mgr.cpp
 
 CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.i: cmake_force
@@ -212,7 +226,7 @@ CMakeFiles/ycsb.dir/src/buf/concur_buf_mgr.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/buf/logging.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/buf/logging.cpp.o: /vol2/pkonrad/spitfire/src/buf/logging.cpp
 CMakeFiles/ycsb.dir/src/buf/logging.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ycsb.dir/src/buf/logging.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ycsb.dir/src/buf/logging.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/buf/logging.cpp.o -MF CMakeFiles/ycsb.dir/src/buf/logging.cpp.o.d -o CMakeFiles/ycsb.dir/src/buf/logging.cpp.o -c /vol2/pkonrad/spitfire/src/buf/logging.cpp
 
 CMakeFiles/ycsb.dir/src/buf/logging.cpp.i: cmake_force
@@ -226,7 +240,7 @@ CMakeFiles/ycsb.dir/src/buf/logging.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o: /vol2/pkonrad/spitfire/src/buf/ssd_page_mgr.cpp
 CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o -MF CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o.d -o CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.o -c /vol2/pkonrad/spitfire/src/buf/ssd_page_mgr.cpp
 
 CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.i: cmake_force
@@ -240,7 +254,7 @@ CMakeFiles/ycsb.dir/src/buf/ssd_page_mgr.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/compression/compression.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/compression/compression.cpp.o: /vol2/pkonrad/spitfire/src/compression/compression.cpp
 CMakeFiles/ycsb.dir/src/compression/compression.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/ycsb.dir/src/compression/compression.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/ycsb.dir/src/compression/compression.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/compression/compression.cpp.o -MF CMakeFiles/ycsb.dir/src/compression/compression.cpp.o.d -o CMakeFiles/ycsb.dir/src/compression/compression.cpp.o -c /vol2/pkonrad/spitfire/src/compression/compression.cpp
 
 CMakeFiles/ycsb.dir/src/compression/compression.cpp.i: cmake_force
@@ -254,7 +268,7 @@ CMakeFiles/ycsb.dir/src/compression/compression.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o: /vol2/pkonrad/spitfire/src/engine/transaction_context.cpp
 CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o -MF CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o.d -o CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.o -c /vol2/pkonrad/spitfire/src/engine/transaction_context.cpp
 
 CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.i: cmake_force
@@ -268,7 +282,7 @@ CMakeFiles/ycsb.dir/src/engine/transaction_context.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o: /vol2/pkonrad/spitfire/src/engine/transaction_manager.cpp
 CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o -MF CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o.d -o CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.o -c /vol2/pkonrad/spitfire/src/engine/transaction_manager.cpp
 
 CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.i: cmake_force
@@ -282,7 +296,7 @@ CMakeFiles/ycsb.dir/src/engine/transaction_manager.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/util/coding.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/util/coding.cpp.o: /vol2/pkonrad/spitfire/src/util/coding.cpp
 CMakeFiles/ycsb.dir/src/util/coding.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/ycsb.dir/src/util/coding.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/ycsb.dir/src/util/coding.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/util/coding.cpp.o -MF CMakeFiles/ycsb.dir/src/util/coding.cpp.o.d -o CMakeFiles/ycsb.dir/src/util/coding.cpp.o -c /vol2/pkonrad/spitfire/src/util/coding.cpp
 
 CMakeFiles/ycsb.dir/src/util/coding.cpp.i: cmake_force
@@ -296,7 +310,7 @@ CMakeFiles/ycsb.dir/src/util/coding.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o: /vol2/pkonrad/spitfire/src/util/crc32c.cpp
 CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o -MF CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o.d -o CMakeFiles/ycsb.dir/src/util/crc32c.cpp.o -c /vol2/pkonrad/spitfire/src/util/crc32c.cpp
 
 CMakeFiles/ycsb.dir/src/util/crc32c.cpp.i: cmake_force
@@ -310,7 +324,7 @@ CMakeFiles/ycsb.dir/src/util/crc32c.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o: /vol2/pkonrad/spitfire/src/util/cuckoo_map.cpp
 CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o -MF CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o.d -o CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.o -c /vol2/pkonrad/spitfire/src/util/cuckoo_map.cpp
 
 CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.i: cmake_force
@@ -324,7 +338,7 @@ CMakeFiles/ycsb.dir/src/util/cuckoo_map.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/util/env.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/util/env.cpp.o: /vol2/pkonrad/spitfire/src/util/env.cpp
 CMakeFiles/ycsb.dir/src/util/env.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/ycsb.dir/src/util/env.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/ycsb.dir/src/util/env.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/util/env.cpp.o -MF CMakeFiles/ycsb.dir/src/util/env.cpp.o.d -o CMakeFiles/ycsb.dir/src/util/env.cpp.o -c /vol2/pkonrad/spitfire/src/util/env.cpp
 
 CMakeFiles/ycsb.dir/src/util/env.cpp.i: cmake_force
@@ -338,7 +352,7 @@ CMakeFiles/ycsb.dir/src/util/env.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/util/random.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/util/random.cpp.o: /vol2/pkonrad/spitfire/src/util/random.cpp
 CMakeFiles/ycsb.dir/src/util/random.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/ycsb.dir/src/util/random.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/ycsb.dir/src/util/random.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/util/random.cpp.o -MF CMakeFiles/ycsb.dir/src/util/random.cpp.o.d -o CMakeFiles/ycsb.dir/src/util/random.cpp.o -c /vol2/pkonrad/spitfire/src/util/random.cpp
 
 CMakeFiles/ycsb.dir/src/util/random.cpp.i: cmake_force
@@ -352,7 +366,7 @@ CMakeFiles/ycsb.dir/src/util/random.cpp.s: cmake_force
 CMakeFiles/ycsb.dir/src/util/status.cpp.o: CMakeFiles/ycsb.dir/flags.make
 CMakeFiles/ycsb.dir/src/util/status.cpp.o: /vol2/pkonrad/spitfire/src/util/status.cpp
 CMakeFiles/ycsb.dir/src/util/status.cpp.o: CMakeFiles/ycsb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/ycsb.dir/src/util/status.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/ycsb.dir/src/util/status.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ycsb.dir/src/util/status.cpp.o -MF CMakeFiles/ycsb.dir/src/util/status.cpp.o.d -o CMakeFiles/ycsb.dir/src/util/status.cpp.o -c /vol2/pkonrad/spitfire/src/util/status.cpp
 
 CMakeFiles/ycsb.dir/src/util/status.cpp.i: cmake_force
@@ -371,6 +385,7 @@ ycsb_OBJECTS = \
 "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_configuration.cpp.o" \
 "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_loader.cpp.o" \
 "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.o" \
+"CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o" \
 "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o" \
 "CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o" \
 "CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o" \
@@ -396,6 +411,7 @@ ycsb: CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb.cpp.o
 ycsb: CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_configuration.cpp.o
 ycsb: CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_loader.cpp.o
 ycsb: CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.o
+ycsb: CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o
 ycsb: CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o
 ycsb: CMakeFiles/ycsb.dir/misc/murmur/MurmurHash2.cpp.o
 ycsb: CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o
@@ -413,7 +429,7 @@ ycsb: CMakeFiles/ycsb.dir/src/util/random.cpp.o
 ycsb: CMakeFiles/ycsb.dir/src/util/status.cpp.o
 ycsb: CMakeFiles/ycsb.dir/build.make
 ycsb: CMakeFiles/ycsb.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable ycsb"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/vol2/pkonrad/spitfire/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Linking CXX executable ycsb"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ycsb.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

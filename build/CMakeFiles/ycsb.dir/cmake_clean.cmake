@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_loader.cpp.o.d"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.o"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_mixed.cpp.o.d"
+  "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o"
+  "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_validation.cpp.o.d"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o"
   "CMakeFiles/ycsb.dir/src/benchmark/ycsb/ycsb_workload.cpp.o.d"
   "CMakeFiles/ycsb.dir/src/buf/buf_mgr.cpp.o"

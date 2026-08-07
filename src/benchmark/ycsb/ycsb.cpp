@@ -18,6 +18,7 @@
 #include "benchmark/ycsb/ycsb_configuration.h"
 #include "benchmark/ycsb/ycsb_loader.h"
 #include "benchmark/ycsb/ycsb_workload.h"
+#include "benchmark/ycsb/ycsb_validation.h"
 
 namespace spitfire {
 namespace benchmark {
@@ -171,6 +172,12 @@ void RunBenchmark() {
 
     s = buf_mgr.InitLogging();
     assert(s.ok());
+
+    if (state.validate) {
+        ValidateTableChecksum(&buf_mgr);
+        DestroyYCSBDatabase(&buf_mgr);
+        return;
+    }
 
     size_t num_keys = (state.scale_factor * 1000);
     std::vector<uint64_t> keys;
