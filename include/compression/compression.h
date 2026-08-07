@@ -140,5 +140,10 @@ inline bool IsCompressed(const uint8_t* leaf) {
            == kCompressedMagic;
 }
 
+inline size_t CompressedSize(const uint8_t* leaf) {
+    const auto* h = reinterpret_cast<const CompHeader*>(leaf + kLeafHeaderSize);
+    return CompLayout(h->id_width).total;
+}
+
 }  // namespace compression
 }  // namespace spitfire

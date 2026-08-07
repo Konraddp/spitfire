@@ -7,6 +7,7 @@
 #include "util/logger.h"
 #include "buf/buf_mgr.h"
 #include <sstream>
+#include "compression/compression.h"
 
 namespace spitfire {
 
@@ -633,23 +634,46 @@ Status ConcurrentBufferManager::FillDRAMPage(SharedPageDesc *shared_ph, PageDesc
                 ScopedTimer timer([&, this](unsigned long long d){this->stat->cycles_spent_nvm_to_dram+=d;});
                 size_t bytes_copied = 0;
                 auto original_num_blocks = dram_ph->num_blocks;
-                // Fill every non-resident block in DRAM page using contents from the NVM page
-                dram_ph->ForeachUnsetBitInBitmapByPageRange(off, size, dram_ph->residency_bitmap,
-                                                            [&](int bit_pos) {
-                                                                assert(dram_ph->residency_bitmap.Test(bit_pos) ==
-                                                                       false);
-                                                                assert(dram_ph->dirty_bitmap.Test(bit_pos) == false);
-
-                                                                if (dram_ph->type == PageType::DRAM_MINI) {
-                                                                    dram_ph->block_pointers[dram_ph->num_blocks] = bit_pos;
-                                                                    dram_ph->page->blocks[dram_ph->num_blocks] = nvm_ph->page->blocks[bit_pos];
-                                                                } else {
-                                                                    dram_ph->page->blocks[bit_pos] = nvm_ph->page->blocks[bit_pos];
-                                                                }
-                                                                dram_ph->residency_bitmap.Set(bit_pos);
-                                                                bytes_copied += kNVMBlockSize;
-                                                                dram_ph->num_blocks++;
-                                                            });
+ 
+                const bool nvm_page_compressed =
+                    compression::IsCompressed(reinterpret_cast<const uint8_t *>(nvm_ph->page));
+ 
+                if (nvm_page_compressed) {
+                    // ---- Mode A: decode the whole page NVM -> DRAM ----
+                    // Only the compressed prefix of the NVM page is read; the
+                    // decoded image is written straight into the DRAM frame
+                    // (no aliasing: source and destination are different pages).
+                    assert(dram_ph->type != PageType::DRAM_MINI &&
+                           "compression + mini pages not supported (run with mini pages off)");
+                    compression::DecodeRange(
+                        reinterpret_cast<const uint8_t *>(nvm_ph->page),
+                        0, kPageSize,
+                        reinterpret_cast<char *>(dram_ph->page));
+                    // the whole page is now resident
+                    dram_ph->residency_bitmap.SetAll();
+                    dram_ph->num_blocks = kPageSize / kNVMBlockSize;
+                    // count what actually crossed the bus, not the decoded size
+                    bytes_copied = compression::CompressedSize(
+                        reinterpret_cast<const uint8_t *>(nvm_ph->page));
+                } else {
+                    // ---- original path: raw block copy ----
+                    dram_ph->ForeachUnsetBitInBitmapByPageRange(off, size, dram_ph->residency_bitmap,
+                                                                [&](int bit_pos) {
+                                                                    assert(dram_ph->residency_bitmap.Test(bit_pos) ==
+                                                                           false);
+                                                                    assert(dram_ph->dirty_bitmap.Test(bit_pos) == false);
+ 
+                                                                    if (dram_ph->type == PageType::DRAM_MINI) {
+                                                                        dram_ph->block_pointers[dram_ph->num_blocks] = bit_pos;
+                                                                        dram_ph->page->blocks[dram_ph->num_blocks] = nvm_ph->page->blocks[bit_pos];
+                                                                    } else {
+                                                                        dram_ph->page->blocks[bit_pos] = nvm_ph->page->blocks[bit_pos];
+                                                                    }
+                                                                    dram_ph->residency_bitmap.Set(bit_pos);
+                                                                    bytes_copied += kNVMBlockSize;
+                                                                    dram_ph->num_blocks++;
+                                                                });
+                }
                 if (dram_ph->type == PageType::DRAM_MINI && bytes_copied) {
                     dram_ph->SortMiniPageBlocks(original_num_blocks);
                     assert(dram_ph->num_blocks <= kMiniPageNVMBlockNum);
@@ -682,6 +706,15 @@ Status ConcurrentBufferManager::FillDRAMPage(SharedPageDesc *shared_ph, PageDesc
             return s;
         stat->bytes_copied_ssd_to_dram += kPageSize;
         stat->ssd_reads += 1;
+ 
+        if (compression::IsCompressed(reinterpret_cast<const uint8_t *>(dram_ph->page))) {
+            // decode in place -> needs a scratch buffer (source == destination)
+            thread_local std::vector<char> decode_scratch(kPageSize);
+            compression::DecodeRange(
+                reinterpret_cast<const uint8_t *>(dram_ph->page),
+                0, kPageSize, decode_scratch.data());
+            memcpy(dram_ph->page, decode_scratch.data(), kPageSize);
+        }
         dram_ph->residency_bitmap.SetAll();
     }
     return Status::OK();

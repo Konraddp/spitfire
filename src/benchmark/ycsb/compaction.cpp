@@ -44,22 +44,33 @@ void CompactYCSBTable(ConcurrentBufferManager *buf_mgr) {
 
     // Pass 2
     std::vector<uint8_t> scratch(kPageSize);
+    std::vector<pid_t> touched;                       // <-- neu
     size_t leaves_encoded = 0;
     index.ForEachLeaf([&](pid_t pid, char *leaf) {
-        (void)pid;
         auto *raw = reinterpret_cast<uint8_t *>(leaf);
         if (IsCompressed(raw)) return;
         uint16_t count = *reinterpret_cast<const uint16_t *>(raw + 10);
         EncodeLeaf(raw, count, scratch.data());
         memcpy(leaf, scratch.data(), kPageSize);
+        touched.push_back(pid);                       // <-- neu
         leaves_encoded++;
     });
+    
+
+    // Drop the cached copies of the leaves we rewrote: the compressed images
+    // below are the only truth from here on, so every later access goes
+    // through the decode hook. Only leaf pages — inner/root pages stay pinned
+    // by the tree and must not be force-flushed.
+    for (auto pid : touched) buf_mgr->Flush(pid, true);
+    for (auto pid : touched) buf_mgr->Flush(pid, true);
+    LOG_INFO("compaction: %zu leaf buffers drained", touched.size());
 
     const CompLayout L(idw);
     LOG_INFO("compaction pass 2: %zu pages compressed, %zu B used per page "
              "(ratio %.1f:1 on page content)",
              leaves_encoded, L.total, (double)kPageSize / (double)L.total);
 }
+
 
 }  // namespace compression
 }  // namespace spitfire
