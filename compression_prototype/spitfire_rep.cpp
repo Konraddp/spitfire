@@ -12,9 +12,7 @@
 #include <random>
 #include <algorithm>
 
-
 // The real tuple & page layout (replicated from Spitfire, verified)
-
 
 #define COLUMN_COUNT 10
 #define COLUMN_SIZE  100

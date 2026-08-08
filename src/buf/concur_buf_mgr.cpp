@@ -655,7 +655,6 @@ Status ConcurrentBufferManager::FillDRAMPage(SharedPageDesc *shared_ph, PageDesc
                         reinterpret_cast<char *>(dram_ph->page));
                     bytes_copied = compression::CompressedSize(
                         reinterpret_cast<const uint8_t *>(nvm_ph->page));
-                    // publish residency only AFTER the page is fully decoded
                     std::atomic_thread_fence(std::memory_order_release);
                     dram_ph->residency_bitmap.SetAll();
                     dram_ph->num_blocks = kPageSize / kNVMBlockSize;
