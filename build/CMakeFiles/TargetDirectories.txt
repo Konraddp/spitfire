@@ -1,6 +1,0 @@
-/vol2/pkonrad/spitfire/build/CMakeFiles/btree_unit_test.dir
-/vol2/pkonrad/spitfire/build/CMakeFiles/txn_unit_test.dir
-/vol2/pkonrad/spitfire/build/CMakeFiles/ycsb.dir
-/vol2/pkonrad/spitfire/build/CMakeFiles/tpcc.dir
-/vol2/pkonrad/spitfire/build/CMakeFiles/edit_cache.dir
-/vol2/pkonrad/spitfire/build/CMakeFiles/rebuild_cache.dir

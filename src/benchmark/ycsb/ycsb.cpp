@@ -141,6 +141,11 @@ void RunBenchmark() {
     SSDPageManager ssd_page_manager(state.db_path, state.bp_config.enable_direct_io);
     s = ssd_page_manager.Init();
     assert(s.ok());
+    if (state.comp_mode == 2) {
+        state.mg_policy.Dr = 0;
+        state.mg_policy.Dw = 0;
+        LOG_INFO("Mode B: migration policy set to Dr=0, Dw=0 (selective decode on NVM)");
+    }
     ConcurrentBufferManager buf_mgr(&ssd_page_manager, state.mg_policy, state.bp_config);
     if (state.bp_mode == BufferPoolMode::NVM_SSD) {
         buf_mgr.SetNVMSSDMode();

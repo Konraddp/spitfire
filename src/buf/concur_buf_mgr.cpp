@@ -481,6 +481,13 @@ Status ConcurrentBufferManager::Get(const pid_t pid, SharedPageDesc *&shared_ph,
                     return s;
                 stat->bytes_copied_ssd_to_dram += kPageSize;
                 stat->ssd_reads += 1;
+                if (compression::IsCompressed(reinterpret_cast<const uint8_t *>(ph->page))) {
+                    static thread_local char decode_scratch2[kPageSize];
+                    compression::DecodeRange(
+                        reinterpret_cast<const uint8_t *>(ph->page),
+                        0, kPageSize, decode_scratch2);
+                    memcpy(ph->page, decode_scratch2, kPageSize);
+                }
                 ph->residency_bitmap.SetAll();
             }
             sph->dram_ph = ph;
@@ -1386,6 +1393,13 @@ Slice ConcurrentBufferManager::PageAccessor::PrepareForAccess(uint32_t off, size
             }
             //nvm_ph->Reference();
             //mgr->stat.hits_on_nvm++;
+            if (compression::IsCompressed(reinterpret_cast<const uint8_t *>(nvm_ph->page))) {
+                static thread_local char nvm_decode_scratch[kPageSize];
+                compression::DecodeRange(
+                    reinterpret_cast<const uint8_t *>(nvm_ph->page),
+                    off, size, nvm_decode_scratch);
+                return Slice(nvm_decode_scratch, size);
+            }
             return Slice(reinterpret_cast<char *>(nvm_ph->page) + off, size);
         }
         //LockGuard g(&shared_ph->m);
