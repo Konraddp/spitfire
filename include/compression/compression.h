@@ -41,6 +41,8 @@
 #include <algorithm>
 #include <utility>
 
+#include <atomic>
+
 #include "benchmark/ycsb/ycsb_configuration.h"   // YCSBTuple, COLUMN_COUNT
 #include "buf/buf_mgr.h"                          // kPageSize
 
@@ -122,6 +124,30 @@ struct DictionarySet {
 };
 
 extern DictionarySet g_dicts;
+
+// ---- M3 counters -----------------------------------------------------------
+// Count per operation, not per second -> immune against machine drift.
+// bytes_read is cache-line-granular: CPU cannot read less than 64 B,
+// so ceil on cache-lines and not logical bytes.
+struct Counters {
+    std::atomic<uint64_t> bytes_read{0};
+    std::atomic<uint64_t> decode_calls{0};
+    std::atomic<uint64_t> dict_lookups{0};
+    std::atomic<uint64_t> decode_ns{0};
+
+    void Reset() {
+        bytes_read = 0; decode_calls = 0; dict_lookups = 0; decode_ns = 0;
+    }
+};
+extern Counters g_counters;
+
+constexpr size_t kCacheLine = 64;
+inline size_t CacheLinesFor(size_t off, size_t n) {
+    if (n == 0) return 0;                 // sonst Underflow bei (0,0)
+    size_t first = off / kCacheLine;
+    size_t last  = (off + n - 1) / kCacheLine;
+    return (last - first + 1) * kCacheLine;
+}
 
 // ---- API --------------------------------------------------------------------
 // Pass 1: register all column values of one raw leaf page.
