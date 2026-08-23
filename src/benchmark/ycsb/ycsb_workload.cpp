@@ -25,6 +25,7 @@
 #include <limits>
 
 #include "benchmark/ycsb/ycsb_workload.h"
+#include "compression/compression.h"
 #include "benchmark/ycsb/ycsb_configuration.h"
 #include "benchmark/ycsb/ycsb_loader.h"
 #include "benchmark/minimizer.h"
@@ -263,6 +264,9 @@ void SimulatedAnnealingDriver(PadInt *commit_counts, ConcurrentBufferManager *bu
 }
 
 void RunWorkload(ConcurrentBufferManager *buf_mgr, const std::vector<uint64_t> &keys) {
+    // M3: discard warm-up decode traffic; only the measured run counts.
+    compression::g_counters.Reset();
+
     // Execute the workload to build the log
     std::vector<std::thread> thread_group;
     size_t num_threads = state.backend_count;
@@ -386,6 +390,22 @@ void RunWorkload(ConcurrentBufferManager *buf_mgr, const std::vector<uint64_t> &
         total_abort_count += abort_counts_profiles[profile_round - 1][i].data;
     }
 
+    // ---- M3 counters -------------------------------------------------------
+    {
+        const auto &c = compression::g_counters;
+        const uint64_t calls = c.decode_calls.load();
+        LOG_INFO("M3 decode_calls=%lu bytes_read=%lu dict_lookups=%lu decode_ns=%lu",
+                 (unsigned long)calls,
+                 (unsigned long)c.bytes_read.load(),
+                 (unsigned long)c.dict_lookups.load(),
+                 (unsigned long)c.decode_ns.load());
+        if (calls) {
+            LOG_INFO("M3 per_call bytes=%.1f lookups=%.1f ns=%.1f",
+                     c.bytes_read.load()   / (double)calls,
+                     c.dict_lookups.load() / (double)calls,
+                     c.decode_ns.load()    / (double)calls);
+        }
+    }
     state.throughput = (total_commit_count) * 1.0 / (state.duration);
     state.abort_rate = (total_abort_count) * 1.0 / (total_commit_count + total_abort_count);
 
