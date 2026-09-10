@@ -20,6 +20,21 @@
 #include "benchmark/ycsb/ycsb_workload.h"
 #include "benchmark/ycsb/ycsb_validation.h"
 #include <unistd.h>
+#include <execinfo.h>
+#include <csignal>
+
+// Diagnose des sporadischen Segfaults in Mode A. Der Handler laeuft im
+// Kontext des abgestuerzten Threads und schreibt den Stack nach stderr.
+// Nur mit -g -rdynamic uebersetzen, sonst stehen dort nur Adressen.
+// Registriert wird er als erste Anweisung in main().
+static void SegvHandler(int sig) {
+  const char msg[] = "\n*** SIGSEGV ***\n";
+  write(STDERR_FILENO, msg, sizeof(msg) - 1);
+  void *frames[64];
+  int n = backtrace(frames, 64);
+  backtrace_symbols_fd(frames, n, STDERR_FILENO);
+  _exit(128 + sig);
+}
 
 namespace spitfire {
 namespace benchmark {
@@ -213,6 +228,10 @@ void RunBenchmark() {
 }  // namespace peloton
 
 int main(int argc, char **argv) {
+    void *warm[4];
+    backtrace(warm, 4);          // Unwinder vorab laden
+    signal(SIGSEGV, SegvHandler);
+
     spitfire::benchmark::ycsb::ParseArguments(argc, argv,
                                                         spitfire::benchmark::ycsb::state);
 
