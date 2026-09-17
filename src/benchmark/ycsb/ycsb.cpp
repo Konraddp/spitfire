@@ -192,15 +192,18 @@ void RunBenchmark() {
     }
 
     s = buf_mgr.InitLogging();
+
     assert(s.ok());
 
     if (state.validate) {
+        if (state.update_ratio > 0) {
+            ApplyDeterministicUpdates(&buf_mgr);
+        }
         ValidateTableChecksum(&buf_mgr);
         DestroyYCSBDatabase(&buf_mgr);
         std::cout.flush();
         _exit(0); 
     }
-
     size_t num_keys = (state.scale_factor * 1000);
     std::vector<uint64_t> keys;
     for (int i = 0; i < num_keys; ++i)
