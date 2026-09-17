@@ -1358,7 +1358,22 @@ static void yield(int count) {
 thread_local extern uint64_t current_txn_id;
 
 Slice ConcurrentBufferManager::PageAccessor::PrepareForAccess(uint32_t off, size_t size, PageOPIntent intent) {
-//    if (cur_type == PageType::INVALID || size == 0)
+    // A previous write through this accessor still lives in the decode
+    // scratch, which this call is about to overwrite. Encode it back first.
+    if (comp_writeback_page != nullptr) {
+        bool ok = compression::EncodeRange(comp_writeback_page,
+                                           comp_writeback_off,
+                                           comp_writeback_size,
+                                           comp_writeback_src);
+        if (!ok) {
+            fprintf(stderr, "ENCODE ERROR: value outside dictionary at "
+                            "off=%u size=%zu\n",
+                    comp_writeback_off, comp_writeback_size);
+            abort();
+        }
+        comp_writeback_page = nullptr;
+    }
+    //    if (cur_type == PageType::INVALID || size == 0)
 //        return Slice(nullptr, 0);
     // Log pending writes if any
     LogWrite();
@@ -1397,6 +1412,13 @@ Slice ConcurrentBufferManager::PageAccessor::PrepareForAccess(uint32_t off, size
                 compression::DecodeRange(
                     reinterpret_cast<const uint8_t *>(nvm_ph->page),
                     off, size, nvm_decode_scratch);
+                if (intent == PageOPIntent::INTENT_WRITE ||
+                    intent == PageOPIntent::INTENT_WRITE_FULL) {
+                    comp_writeback_page = reinterpret_cast<uint8_t *>(nvm_ph->page);
+                    comp_writeback_src  = nvm_decode_scratch;
+                    comp_writeback_off  = off;
+                    comp_writeback_size = size;
+                }
                 return Slice(nvm_decode_scratch, size);
             }
             return Slice(reinterpret_cast<char *>(nvm_ph->page) + off, size);
@@ -1533,6 +1555,22 @@ void ConcurrentBufferManager::PageAccessor::ClearLoggingStates() {
 
 
 void ConcurrentBufferManager::PageAccessor::FinishAccess() {
+    // The NVM path returns from PrepareForAccess before `accessed` is set,
+    // so the write-back must not be nested inside that check.
+    if (comp_writeback_page != nullptr) {
+        bool ok = compression::EncodeRange(comp_writeback_page,
+                                           comp_writeback_off,
+                                           comp_writeback_size,
+                                           comp_writeback_src);
+        if (!ok) {
+            fprintf(stderr, "ENCODE ERROR: value outside dictionary at "
+                            "off=%u size=%zu (stage-1 write path supports "
+                            "only values already present)\n",
+                    comp_writeback_off, comp_writeback_size);
+            abort();
+        }
+        comp_writeback_page = nullptr;
+    }
     if (accessed) {
         mgr->page_payload_ref.Leave();
         // Log pending writes if any

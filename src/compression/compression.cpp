@@ -181,6 +181,127 @@ void DecodeRange(const uint8_t *comp_leaf, size_t off, size_t size, char *out) {
         std::chrono::nanoseconds>(std::chrono::steady_clock::now() - t_start).count();
 #endif
 }
+// ---------------------------------------------------------------------------
+// Stage-1 write path: in-place update of a compressed leaf.
+//
+// The inverse of DecodeRange, and deliberately built from the same case
+// analysis: node header raw, prefix raw, column via dictionary, padding
+// ignored. Only values already present in the dictionary can be written, so
+// the dictionary stays immutable and the read path keeps needing no locking.
+//
+// Two properties are worth stating because they are not obvious.
+//
+// A write that covers only part of a column cannot determine the new
+// identifier from the written bytes alone: the identifier is a function of the
+// whole 100-byte value. Such a write therefore reconstructs the current value
+// from the stored identifier, overlays the written bytes, and looks up the
+// result.
+//
+// A write spanning several columns may fail on any one of them. The operation
+// is therefore performed in two passes -- validate, then write -- so that a
+// rejected update leaves the page exactly as it was rather than half applied.
+// ---------------------------------------------------------------------------
+namespace {
+
+// Identifier of the value that results from overlaying [within, within+k) of
+// `src` onto the value currently stored at (entry, col).
+bool ResolveColumnId(const uint8_t *comp_leaf, const CompLayout &L, uint8_t idw,
+                     size_t entry, size_t col, size_t within, size_t k,
+                     const char *src, uint32_t &out_id) {
+    char value[kColumnSize];
+    if (within == 0 && k == kColumnSize) {
+        memcpy(value, src, kColumnSize);
+    } else {
+        uint32_t old_id = 0;
+        memcpy(&old_id, comp_leaf + L.ids_off + (entry * kNumColumns + col) * idw, idw);
+        if (old_id >= g_dicts.cols[col].id_to_value.size()) return false;
+        memcpy(value, g_dicts.cols[col].id_to_value[old_id].data(), kColumnSize);
+        memcpy(value + within, src, k);
+    }
+    return g_dicts.cols[col].Lookup(value, out_id);
+}
+
+// One pass over the range. With validate_only == true nothing is modified.
+bool EncodeRangePass(uint8_t *comp_leaf, size_t off, size_t size, const char *in,
+                     bool validate_only, uint64_t &lookups) {
+    const auto *hdr = reinterpret_cast<const CompHeader *>(comp_leaf + kLeafHeaderSize);
+    const uint8_t idw = hdr->id_width;
+    const size_t  n   = hdr->num_entries;
+    const CompLayout L(idw);
+
+    size_t cur = off;
+    const size_t end = off + size;
+
+    while (cur < end) {
+        if (cur < kDataOff) {                       // node header, raw
+            size_t k = std::min(end, kDataOff) - cur;
+            if (!validate_only) memcpy(comp_leaf + cur, in + (cur - off), k);
+            cur += k;
+            continue;
+        }
+        if (cur >= kDataEnd) break;                 // trailing padding, ignored
+
+        size_t rel       = cur - kDataOff;
+        size_t entry_idx = rel / kEntrySize;
+        size_t rem       = rel % kEntrySize;
+        size_t entry_end = kDataOff + (entry_idx + 1) * kEntrySize;
+        size_t stop      = std::min(end, std::min(entry_end, kDataEnd));
+
+        if (entry_idx >= n) return false;           // would be an insert
+
+        while (cur < stop) {
+            if (rem < kPrefixSize) {                // prefix, raw
+                size_t k = std::min(stop - cur, kPrefixSize - rem);
+                if (!validate_only)
+                    memcpy(comp_leaf + L.prefixes_off + entry_idx * kPrefixSize + rem,
+                           in + (cur - off), k);
+                cur += k; rem += k;
+            } else if (rem >= kColsOffInEntry + kNumColumns * kColumnSize) {
+                size_t k = std::min(stop - cur, kEntrySize - rem);
+                cur += k; rem += k;                 // per-entry alignment pad
+            } else {
+                size_t col        = (rem - kColsOffInEntry) / kColumnSize;
+                size_t within_col = (rem - kColsOffInEntry) % kColumnSize;
+                size_t k = std::min(stop - cur, kColumnSize - within_col);
+
+                uint32_t id = 0;
+                if (!ResolveColumnId(comp_leaf, L, idw, entry_idx, col,
+                                     within_col, k, in + (cur - off), id))
+                    return false;
+                ++lookups;
+
+                if (!validate_only)
+                    memcpy(comp_leaf + L.ids_off + (entry_idx * kNumColumns + col) * idw,
+                           &id, idw);
+                cur += k; rem += k;
+            }
+        }
+    }
+    return true;
+}
+
+}  // namespace
+
+bool EncodeRange(uint8_t *comp_leaf, size_t off, size_t size, const char *in) {
+    const auto *hdr = reinterpret_cast<const CompHeader *>(comp_leaf + kLeafHeaderSize);
+    assert(hdr->magic == kCompressedMagic);
+    assert(off + size <= kPageSize);
+
+    uint64_t lookups = 0;
+    if (!EncodeRangePass(comp_leaf, off, size, in, true, lookups)) {
+        g_counters.encode_failures += 1;
+        return false;
+    }
+    // The validating pass already proved every value resolvable, so the second
+    // pass cannot fail; its return value is checked only to keep the contract
+    // explicit.
+    uint64_t written = 0;
+    bool ok = EncodeRangePass(comp_leaf, off, size, in, false, written);
+
+    g_counters.encode_calls   += 1;
+    g_counters.encode_lookups += lookups;
+    return ok;
+}
 
 }  // namespace compression
 }  // namespace spitfire

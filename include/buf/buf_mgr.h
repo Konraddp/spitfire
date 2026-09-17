@@ -1758,6 +1758,13 @@ public:
         void ClearLoggingStates();
 
         void LogWrite();
+        // Stage-1 write path on compressed NVM pages. A write to such a page
+        // lands in the thread-local decode scratch, not in the page itself,
+        // so the modified range has to be encoded back when the access ends.
+        uint8_t *comp_writeback_page = nullptr;
+        const char *comp_writeback_src = nullptr;
+        uint32_t comp_writeback_off = 0;
+        size_t comp_writeback_size = 0;
 
         friend class ConcurrentBufferManager;
 

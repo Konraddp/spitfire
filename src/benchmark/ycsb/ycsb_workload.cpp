@@ -405,6 +405,15 @@ void RunWorkload(ConcurrentBufferManager *buf_mgr, const std::vector<uint64_t> &
                      c.dict_lookups.load() / (double)calls,
                      c.decode_ns.load()    / (double)calls);
         }
+                const uint64_t ecalls = c.encode_calls.load();
+        LOG_INFO("M3 encode_calls=%lu encode_lookups=%lu encode_failures=%lu",
+                 (unsigned long)ecalls,
+                 (unsigned long)c.encode_lookups.load(),
+                 (unsigned long)c.encode_failures.load());
+        if (ecalls) {
+            LOG_INFO("M3 per_encode_call lookups=%.1f",
+                     c.encode_lookups.load() / (double)ecalls);
+        }
     }
     state.throughput = (total_commit_count) * 1.0 / (state.duration);
     state.abort_rate = (total_abort_count) * 1.0 / (total_commit_count + total_abort_count);

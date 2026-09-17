@@ -54,7 +54,21 @@ bool RunMixed(ConcurrentBufferManager *buf_mgr, const size_t thread_id, ZipfDist
                                                                          return t.key == lookup_key;
                                                                      }, [](YCSBTuple &t) {
                         for (int c = 0; c < COLUMN_COUNT; ++c) {
-                            memset(t.cols[c], 1, sizeof(t.cols[c]));
+                            memset(t.cols[c], 0, sizeof(t.cols[c]));
+                            if (state.cardinality > 0) {
+                                // Stage-1 write path: the new value must already
+                                // be in the dictionary, so it comes from the same
+                                // generator the loader uses (identical 32-bit
+                                // arithmetic), with the row identifier shifted by
+                                // one so the value actually changes.
+                                uint32_t v = (uint32_t)(((t.key + 1) * 2654435761u
+                                                         + c * 40503u)
+                                                        % state.cardinality);
+                                snprintf(t.cols[c], sizeof(t.cols[c]),
+                                         "C%d_V%08u_", c, v);
+                            } else {
+                                memset(t.cols[c], 1, sizeof(t.cols[c]));
+                            }
                         }
                     }, txn, buf_mgr);
 

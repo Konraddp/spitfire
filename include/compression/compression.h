@@ -26,8 +26,9 @@
 //   [24, 32)  CompHeader
 //   [32, ...) prefixes[15 * 52], then ids[15 * 10 * id_width]
 //
-// Scope: read-only workload. Dictionary built once by the compaction pass,
-// immutable afterwards -> no locking on the read path.
+// Scope: reads, plus stage-1 updates that assign values already present in
+// the dictionary. The dictionary is built once by the compaction pass and is
+// immutable afterwards -> no locking on either path.
 // ============================================================================
 
 #pragma once
@@ -96,7 +97,7 @@ struct CompLayout {
 // ---- Dictionaries -----------------------------------------------------------
 struct ColumnDictionary {
     std::vector<std::array<char, kColumnSize>> id_to_value;   // hot path
-    std::unordered_map<std::string, uint32_t>  value_to_id;   // load phase only
+    std::unordered_map<std::string, uint32_t>  value_to_id;   // build + write path
 
     uint32_t GetOrInsert(const char* value) {
         std::string s(value, kColumnSize);
@@ -108,6 +109,15 @@ struct ColumnDictionary {
         id_to_value.push_back(entry);
         value_to_id.emplace(std::move(s), new_id);
         return new_id;
+    }
+    // Read-only lookup for the stage-1 write path. Never inserts: a value
+    // outside the dictionary must fail loudly rather than grow it, since
+    // growing it would require locking on the read path (R4).
+    bool Lookup(const char* value, uint32_t& id) const {
+        auto it = value_to_id.find(std::string(value, kColumnSize));
+        if (it == value_to_id.end()) return false;
+        id = it->second;
+        return true;
     }
     size_t Cardinality() const { return id_to_value.size(); }
 };
@@ -134,9 +144,13 @@ struct Counters {
     std::atomic<uint64_t> decode_calls{0};
     std::atomic<uint64_t> dict_lookups{0};
     std::atomic<uint64_t> decode_ns{0};
+    std::atomic<uint64_t> encode_calls{0};
+    std::atomic<uint64_t> encode_lookups{0};
+    std::atomic<uint64_t> encode_failures{0};
 
     void Reset() {
         bytes_read = 0; decode_calls = 0; dict_lookups = 0; decode_ns = 0;
+        encode_calls = 0; encode_lookups = 0; encode_failures = 0;
     }
 };
 extern Counters g_counters;
@@ -160,6 +174,12 @@ void EncodeLeaf(const uint8_t* raw_leaf, uint16_t num_entries, uint8_t* comp_lea
 //   Mode A: DecodeRange(leaf, 0, kPageSize, frame)
 //   Mode B: DecodeRange(leaf, entry_off, kEntrySize, scratch)
 void DecodeRange(const uint8_t* comp_leaf, size_t off, size_t size, char* out);
+
+// Stage-1 write path: writes the original bytes [off, off+size) taken from
+// `in` into the compressed leaf, in place. Returns false and leaves the page
+// unmodified if any affected column value is not already in the dictionary,
+// or if the range reaches an unoccupied entry slot (that would be an insert).
+bool EncodeRange(uint8_t* comp_leaf, size_t off, size_t size, const char* in);
 
 inline bool IsCompressed(const uint8_t* page) {
     constexpr uint16_t kLeafNodeType = 1;   // LeafNode in btreeolc.h
