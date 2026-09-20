@@ -6,6 +6,7 @@
 #include "benchmark/ycsb/ycsb_loader.h"
 #include "engine/executor.h"
 #include "util/logger.h"
+#include "compression/compression.h"
 
 namespace spitfire {
 namespace benchmark {
@@ -43,7 +44,9 @@ size_t ApplyDeterministicUpdates(ConcurrentBufferManager *buf_mgr, int stride) {
                 for (int c = 0; c < COLUMN_COUNT; ++c) {
                     memset(t.cols[c], 0, sizeof(t.cols[c]));
                     if (state.cardinality > 0) {
-                        uint32_t v = (uint32_t)(((t.key + 1) * 2654435761u
+                        const uint32_t kRows = (uint32_t)(state.scale_factor * 1000);
+                        uint32_t rid = (uint32_t)((t.key + 1) % kRows);
+                        uint32_t v = (uint32_t)((rid * 2654435761u
                                                  + c * 40503u) % state.cardinality);
                         snprintf(t.cols[c], sizeof(t.cols[c]), "C%d_V%08u_", c, v);
                     } else {
@@ -64,6 +67,10 @@ size_t ApplyDeterministicUpdates(ConcurrentBufferManager *buf_mgr, int stride) {
 
     LOG_INFO("VALIDATION updates: stride=%d updated=%zu failed=%zu",
              stride, updated, failed);
+    LOG_INFO("VALIDATION write path: encode_calls=%lu lookups=%lu failures=%lu",
+             (unsigned long)compression::g_counters.encode_calls.load(),
+             (unsigned long)compression::g_counters.encode_lookups.load(),
+             (unsigned long)compression::g_counters.encode_failures.load());
     return updated;
 }
 

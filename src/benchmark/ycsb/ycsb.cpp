@@ -197,7 +197,7 @@ void RunBenchmark() {
 
     if (state.validate) {
         if (state.update_ratio > 0) {
-            ApplyDeterministicUpdates(&buf_mgr);
+            ApplyDeterministicUpdates(&buf_mgr, 16);
         }
         ValidateTableChecksum(&buf_mgr);
         DestroyYCSBDatabase(&buf_mgr);

@@ -61,7 +61,20 @@ bool RunMixed(ConcurrentBufferManager *buf_mgr, const size_t thread_id, ZipfDist
                                 // generator the loader uses (identical 32-bit
                                 // arithmetic), with the row identifier shifted by
                                 // one so the value actually changes.
-                                uint32_t v = (uint32_t)(((t.key + 1) * 2654435761u
+                                //
+                                // The shifted identifier is folded back into the
+                                // range the loader actually wrote, [0, kRows).
+                                // Without the fold, the highest key would derive
+                                // its value from a row that was never loaded, and
+                                // that value need not exist in the dictionary --
+                                // at high cardinality the generator's 32-bit wrap
+                                // leaves part of the value space unused. The one
+                                // key at the upper end therefore takes the value
+                                // of row 0, which is immaterial for the workload.
+                                const uint32_t kRows =
+                                    (uint32_t)(state.scale_factor * 1000);
+                                uint32_t rid = (uint32_t)((t.key + 1) % kRows);
+                                uint32_t v = (uint32_t)((rid * 2654435761u
                                                          + c * 40503u)
                                                         % state.cardinality);
                                 snprintf(t.cols[c], sizeof(t.cols[c]),
