@@ -1,0 +1,35 @@
+2026-10-05 21:34:59 [:47:RunBenchmark] INFO  - Run exponential backoff : 0
+2026-10-05 21:34:59 [:48:RunBenchmark] INFO  - Run string mode : 0
+2026-10-05 21:34:59 [:112:RunBenchmark] INFO  - scale_factor : 512
+2026-10-05 21:34:59 [:113:RunBenchmark] INFO  - profile_duration : 5.000000
+2026-10-05 21:34:59 [:114:RunBenchmark] INFO  - duration : 30.000000
+2026-10-05 21:34:59 [:115:RunBenchmark] INFO  - warmup duration : 0.000000
+2026-10-05 21:34:59 [:116:RunBenchmark] INFO  - lodaer_count : 1
+2026-10-05 21:34:59 [:117:RunBenchmark] INFO  - backend_count : 1
+2026-10-05 21:34:59 [:118:RunBenchmark] INFO  - operation_count : 10
+2026-10-05 21:34:59 [:119:RunBenchmark] INFO  - update_ratio : 0.100000
+2026-10-05 21:34:59 [:120:RunBenchmark] INFO  - zipf_theta : 0.000000
+2026-10-05 21:34:59 [:121:RunBenchmark] INFO  - db_path : /vol2/pkonrad/spitfire_test/db/
+2026-10-05 21:34:59 [:122:RunBenchmark] INFO  - nvm_path : /mnt/pmem1/pkonrad/spitfire_buf/
+2026-10-05 21:34:59 [:123:RunBenchmark] INFO  - wal_path : 
+2026-10-05 21:34:59 [:124:RunBenchmark] INFO  - enable_mini_page : 0
+2026-10-05 21:34:59 [:125:RunBenchmark] INFO  - DRAM buffer size : 122.552MBs
+2026-10-05 21:34:59 [:126:RunBenchmark] INFO  - NVM buffer size : 1474.560MBs
+2026-10-05 21:34:59 [:127:RunBenchmark] INFO  - dram_read_prob : 1.000000
+2026-10-05 21:34:59 [:128:RunBenchmark] INFO  - dram_write_prob : 1.000000
+2026-10-05 21:34:59 [:129:RunBenchmark] INFO  - nvm_read_prob : 1.000000
+2026-10-05 21:34:59 [:130:RunBenchmark] INFO  - nvm_write_prob : 1.000000
+2026-10-05 21:34:59 [:131:RunBenchmark] INFO  - enable_nvm_buf_pool : 1
+2026-10-05 21:34:59 [:132:RunBenchmark] INFO  - bp_mode : DRAM_NVM_SSD
+2026-10-05 21:34:59 [:133:RunBenchmark] INFO  - enable_direct_io : 1
+2026-10-05 21:34:59 [:134:RunBenchmark] INFO  - enable_annealing : 0
+2026-10-05 21:34:59 [:135:RunBenchmark] INFO  - enable_hymem : 0
+2026-10-05 21:34:59 [:136:RunBenchmark] INFO  - nvm_block_size : 16384
+ConcurrentBufferManager::Init nvm_heap_file_path /mnt/pmem1/pkonrad/spitfire_buf//nvm/heapfile
+ConcurrentBufferManager::Init wal_file_path 
+2026-10-05 21:34:59 [:182:RunBenchmark] INFO  - Loading database from scratch
+2026-10-05 21:37:25 [:203:LoadYCSBDatabase] INFO  - database table loading time = 145560.000000 ms
+2026-10-05 21:37:25 [:206:LoadYCSBDatabase] INFO  - user count = 512000
+2026-10-05 21:37:28 [:43:CompactYCSBTable] INFO  - compaction pass 1: 73142 pages, id_width=4, cardinalities: c0=100000 c1=100000 ... c9=100000
+2026-10-05 21:37:53 [:66:CompactYCSBTable] INFO  - compaction: 73142 leaf buffers drained
+2026-10-05 21:37:53 [:71:CompactYCSBTable] INFO  - compaction pass 2: 73142 pages compressed, 1412 B used per page (ratio 11.6:1 on page content)
