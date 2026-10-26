@@ -1,0 +1,107 @@
+=== start 2026-09-18T03:25:58+02:00 tries=1
+ 03:25:58 up 18:17,  1 user,  load average: 48.19, 46.81, 46.08
+--- fremde ycsb-Prozesse:
+---
+2026-09-18 03:25:58 [:47:RunBenchmark] INFO  - Run exponential backoff : 0
+2026-09-18 03:25:58 [:48:RunBenchmark] INFO  - Run string mode : 0
+2026-09-18 03:25:58 [:112:RunBenchmark] INFO  - scale_factor : 512
+2026-09-18 03:25:58 [:113:RunBenchmark] INFO  - profile_duration : 10.000000
+2026-09-18 03:25:58 [:114:RunBenchmark] INFO  - duration : 120.000000
+2026-09-18 03:25:58 [:115:RunBenchmark] INFO  - warmup duration : 60.000000
+2026-09-18 03:25:58 [:116:RunBenchmark] INFO  - lodaer_count : 1
+2026-09-18 03:25:58 [:117:RunBenchmark] INFO  - backend_count : 1
+2026-09-18 03:25:58 [:118:RunBenchmark] INFO  - operation_count : 10
+2026-09-18 03:25:58 [:119:RunBenchmark] INFO  - update_ratio : 0.100000
+2026-09-18 03:25:58 [:120:RunBenchmark] INFO  - zipf_theta : 0.000000
+2026-09-18 03:25:58 [:121:RunBenchmark] INFO  - db_path : /vol2/pkonrad/spitfire_test/db/
+2026-09-18 03:25:58 [:122:RunBenchmark] INFO  - nvm_path : /mnt/pmem1/pkonrad/spitfire_buf/
+2026-09-18 03:25:58 [:123:RunBenchmark] INFO  - wal_path : 
+2026-09-18 03:25:58 [:124:RunBenchmark] INFO  - enable_mini_page : 0
+2026-09-18 03:25:58 [:125:RunBenchmark] INFO  - DRAM buffer size : 122.552MBs
+2026-09-18 03:25:58 [:126:RunBenchmark] INFO  - NVM buffer size : 1474.560MBs
+2026-09-18 03:25:58 [:127:RunBenchmark] INFO  - dram_read_prob : 1.000000
+2026-09-18 03:25:58 [:128:RunBenchmark] INFO  - dram_write_prob : 1.000000
+2026-09-18 03:25:58 [:129:RunBenchmark] INFO  - nvm_read_prob : 1.000000
+2026-09-18 03:25:58 [:130:RunBenchmark] INFO  - nvm_write_prob : 1.000000
+2026-09-18 03:25:58 [:131:RunBenchmark] INFO  - enable_nvm_buf_pool : 1
+2026-09-18 03:25:58 [:132:RunBenchmark] INFO  - bp_mode : DRAM_NVM_SSD
+2026-09-18 03:25:58 [:133:RunBenchmark] INFO  - enable_direct_io : 1
+2026-09-18 03:25:58 [:134:RunBenchmark] INFO  - enable_annealing : 0
+2026-09-18 03:25:58 [:135:RunBenchmark] INFO  - enable_hymem : 0
+2026-09-18 03:25:58 [:136:RunBenchmark] INFO  - nvm_block_size : 16384
+2026-09-18 03:25:58 [:162:RunBenchmark] INFO  - Mode B: migration policy set to Dr=0, Dw=0 (selective decode on NVM)
+ConcurrentBufferManager::Init nvm_heap_file_path /mnt/pmem1/pkonrad/spitfire_buf//nvm/heapfile
+ConcurrentBufferManager::Init nvm_page_allocator->Init() failed: NotFound: open: No such file or directory
+2026-09-18 03:25:58 [:182:RunBenchmark] INFO  - Loading database from scratch
+2026-09-18 03:28:22 [:203:LoadYCSBDatabase] INFO  - database table loading time = 144092.000000 ms
+2026-09-18 03:28:22 [:206:LoadYCSBDatabase] INFO  - user count = 512000
+2026-09-18 03:28:28 [:43:CompactYCSBTable] INFO  - compaction pass 1: 73142 pages, id_width=4, cardinalities: c0=428655 c1=428657 ... c9=428656
+2026-09-18 03:28:39 [:66:CompactYCSBTable] INFO  - compaction: 73142 leaf buffers drained
+2026-09-18 03:28:39 [:71:CompactYCSBTable] INFO  - compaction pass 2: 73142 pages compressed, 1412 B used per page (ratio 11.6:1 on page content)
+2026-09-18 03:29:39 [:182:RunWarmupWorkload] INFO  - Warmed up
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1891872.400000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 2172242.700000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1495541.100000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1517030.100000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1553872.500000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1532190.900000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1719390.500000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1770936.500000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1739737.400000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1708968.700000
+2026-09-18 03:31:39 [:362:RunWorkload] INFO  - 1672635.500000
+2026-09-18 03:31:39 [:401:RunWorkload] INFO  - M3 decode_calls=35487136 bytes_read=5600546432 dict_lookups=71925990 decode_ns=0
+2026-09-18 03:31:39 [:406:RunWorkload] INFO  - M3 per_call bytes=157.8 lookups=2.0 ns=0.0
+2026-09-18 03:31:39 [:412:RunWorkload] INFO  - M3 encode_calls=655134 encode_lookups=6551340 encode_failures=0
+2026-09-18 03:31:39 [:415:RunWorkload] INFO  - M3 per_encode_call lookups=10.0
+2026-09-18 03:31:39 [:421:RunWorkload] INFO  - Buffer Manager Stats:
+nvm_to_dram              0.000MB
+dram_to_nvm              0.000MB
+nvm_to_ssd               764.750MB
+dram_to_ssd              0.000MB
+ssd_to_dram              0.000MB
+ssd_to_nvm               764.906MB
+direct_nvm_write         2126.613MB
+data_allocated_dram      0.000MB
+data_allocated_nvm       764.906MB
+nvm_to_dram_time         0.000s
+dram_to_nvm_time         0.000s
+nvm_to_ssd_time          3.289s
+dram_to_ssd_time         0.000s
+ssd_to_dram_time         0.000s
+ssd_to_nvm_time          0.966s
+dram_evictions           0
+nvm_evictions            48954
+mini_page_promotions     0
+hits_on_dram             0
+hits_on_nvm              40031369
+buf_gets                 40080323
+ssd_reads                48954
+ssd_writes               48944
+num_pages_allocated      139488
+database_size            2179.500MB
+
+# dram_pids    0
+# nvm_pids     90000
+# merged_pids  90000
+inclusivity    0.000000
+----dram_buf_replacer----
+mini pages: 0
+full pages: 0
+page slots: 7480
+bytes:      0
+cap_bytes:  122552320
+----dram_buf_replacer----
+
+----nvm_buf_replacer----
+mini pages: 0
+full pages: 90000
+page slots: 90000
+bytes:      1474560000
+cap_bytes:  1474560000
+----nvm_buf_replacer----
+
+
+2026-09-18 03:31:39 [:327:WriteOutput] INFO  - ----------------------------------------------------------
+2026-09-18 03:31:39 [:337:WriteOutput] INFO  - 512 1 10 0.100000 0.000000 :: 1692197.000000 1691420.125000 0.000000 0
+tries=1 exit=0
