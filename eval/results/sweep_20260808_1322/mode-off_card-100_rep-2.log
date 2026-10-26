@@ -1,0 +1,86 @@
+2026-08-08 13:39:13 [:32:RunBenchmark] INFO  - Run exponential backoff : 0
+2026-08-08 13:39:13 [:33:RunBenchmark] INFO  - Run string mode : 0
+2026-08-08 13:39:13 [:97:RunBenchmark] INFO  - scale_factor : 512
+2026-08-08 13:39:13 [:98:RunBenchmark] INFO  - profile_duration : 5.000000
+2026-08-08 13:39:13 [:99:RunBenchmark] INFO  - duration : 20.000000
+2026-08-08 13:39:13 [:100:RunBenchmark] INFO  - warmup duration : 10.000000
+2026-08-08 13:39:13 [:101:RunBenchmark] INFO  - lodaer_count : 1
+2026-08-08 13:39:13 [:102:RunBenchmark] INFO  - backend_count : 1
+2026-08-08 13:39:13 [:103:RunBenchmark] INFO  - operation_count : 10
+2026-08-08 13:39:13 [:104:RunBenchmark] INFO  - update_ratio : 0.000000
+2026-08-08 13:39:13 [:105:RunBenchmark] INFO  - zipf_theta : 0.000000
+2026-08-08 13:39:13 [:106:RunBenchmark] INFO  - db_path : /vol2/pkonrad/spitfire_test/db/
+2026-08-08 13:39:13 [:107:RunBenchmark] INFO  - nvm_path : /mnt/pmem1/pkonrad/spitfire_buf/
+2026-08-08 13:39:13 [:108:RunBenchmark] INFO  - wal_path : 
+2026-08-08 13:39:13 [:109:RunBenchmark] INFO  - enable_mini_page : 0
+2026-08-08 13:39:13 [:110:RunBenchmark] INFO  - DRAM buffer size : 122.552MBs
+2026-08-08 13:39:13 [:111:RunBenchmark] INFO  - NVM buffer size : 1474.560MBs
+2026-08-08 13:39:13 [:112:RunBenchmark] INFO  - dram_read_prob : 1.000000
+2026-08-08 13:39:13 [:113:RunBenchmark] INFO  - dram_write_prob : 1.000000
+2026-08-08 13:39:13 [:114:RunBenchmark] INFO  - nvm_read_prob : 1.000000
+2026-08-08 13:39:13 [:115:RunBenchmark] INFO  - nvm_write_prob : 1.000000
+2026-08-08 13:39:13 [:116:RunBenchmark] INFO  - enable_nvm_buf_pool : 1
+2026-08-08 13:39:13 [:117:RunBenchmark] INFO  - bp_mode : DRAM_NVM_SSD
+2026-08-08 13:39:13 [:118:RunBenchmark] INFO  - enable_direct_io : 1
+2026-08-08 13:39:13 [:119:RunBenchmark] INFO  - enable_annealing : 0
+2026-08-08 13:39:13 [:120:RunBenchmark] INFO  - enable_hymem : 0
+2026-08-08 13:39:13 [:121:RunBenchmark] INFO  - nvm_block_size : 16384
+ConcurrentBufferManager::Init nvm_heap_file_path /mnt/pmem1/pkonrad/spitfire_buf//nvm/heapfile
+ConcurrentBufferManager::Init wal_file_path 
+2026-08-08 13:39:13 [:167:RunBenchmark] INFO  - Loading database from scratch
+2026-08-08 13:41:39 [:203:LoadYCSBDatabase] INFO  - database table loading time = 146440.000000 ms
+2026-08-08 13:41:39 [:206:LoadYCSBDatabase] INFO  - user count = 512000
+2026-08-08 13:41:50 [:181:RunWarmupWorkload] INFO  - Warmed up
+2026-08-08 13:42:10 [:358:RunWorkload] INFO  - 2079904.400000
+2026-08-08 13:42:10 [:358:RunWorkload] INFO  - 2079751.600000
+2026-08-08 13:42:10 [:358:RunWorkload] INFO  - 2076058.200000
+2026-08-08 13:42:10 [:392:RunWorkload] INFO  - Buffer Manager Stats:
+nvm_to_dram              24299.172MB
+dram_to_nvm              3809.078MB
+nvm_to_ssd               0.000MB
+dram_to_ssd              0.000MB
+ssd_to_dram              0.000MB
+ssd_to_nvm               0.000MB
+direct_nvm_write         0.000MB
+data_allocated_dram      24299.172MB
+data_allocated_nvm       0.000MB
+nvm_to_dram_time         7.837s
+dram_to_nvm_time         2.073s
+nvm_to_ssd_time          0.000s
+dram_to_ssd_time         0.000s
+ssd_to_dram_time         0.000s
+ssd_to_nvm_time          0.000s
+dram_evictions           1555147
+nvm_evictions            0
+mini_page_promotions     0
+hits_on_dram             5465986
+hits_on_nvm              1555156
+buf_gets                 7021142
+ssd_reads                0
+ssd_writes               0
+num_pages_allocated      76185
+database_size            1190.391MB
+
+# dram_pids    7480
+# nvm_pids     76185
+# merged_pids  76185
+inclusivity    0.098182
+----dram_buf_replacer----
+mini pages: 0
+full pages: 7480
+page slots: 7480
+bytes:      122552320
+cap_bytes:  122552320
+----dram_buf_replacer----
+
+----nvm_buf_replacer----
+mini pages: 0
+full pages: 76185
+page slots: 90000
+bytes:      1248215040
+cap_bytes:  1474560000
+----nvm_buf_replacer----
+
+
+2026-08-08 13:42:10 [:327:WriteOutput] INFO  - ----------------------------------------------------------
+2026-08-08 13:42:10 [:337:WriteOutput] INFO  - 512 1 10 0.000000 0.000000 :: 2064705.500000 2071305.200000 0.000000 0
