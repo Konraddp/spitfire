@@ -1,0 +1,95 @@
+2026-10-18 09:54:19 [:32:RunBenchmark] INFO  - Run exponential backoff : 0
+2026-10-18 09:54:19 [:33:RunBenchmark] INFO  - Run string mode : 0
+2026-10-18 09:54:19 [:97:RunBenchmark] INFO  - scale_factor : 512
+2026-10-18 09:54:19 [:98:RunBenchmark] INFO  - profile_duration : 10.000000
+2026-10-18 09:54:19 [:99:RunBenchmark] INFO  - duration : 120.000000
+2026-10-18 09:54:19 [:100:RunBenchmark] INFO  - warmup duration : 60.000000
+2026-10-18 09:54:19 [:101:RunBenchmark] INFO  - lodaer_count : 1
+2026-10-18 09:54:19 [:102:RunBenchmark] INFO  - backend_count : 1
+2026-10-18 09:54:19 [:103:RunBenchmark] INFO  - operation_count : 10
+2026-10-18 09:54:19 [:104:RunBenchmark] INFO  - update_ratio : 0.000000
+2026-10-18 09:54:19 [:105:RunBenchmark] INFO  - zipf_theta : 0.000000
+2026-10-18 09:54:19 [:106:RunBenchmark] INFO  - db_path : /vol2/pkonrad/spitfire_test/db/
+2026-10-18 09:54:19 [:107:RunBenchmark] INFO  - nvm_path : /mnt/pmem1/pkonrad/spitfire_buf/
+2026-10-18 09:54:19 [:108:RunBenchmark] INFO  - wal_path : 
+2026-10-18 09:54:19 [:109:RunBenchmark] INFO  - enable_mini_page : 0
+2026-10-18 09:54:19 [:110:RunBenchmark] INFO  - DRAM buffer size : 122.552MBs
+2026-10-18 09:54:19 [:111:RunBenchmark] INFO  - NVM buffer size : 1474.560MBs
+2026-10-18 09:54:19 [:112:RunBenchmark] INFO  - dram_read_prob : 1.000000
+2026-10-18 09:54:19 [:113:RunBenchmark] INFO  - dram_write_prob : 1.000000
+2026-10-18 09:54:19 [:114:RunBenchmark] INFO  - nvm_read_prob : 1.000000
+2026-10-18 09:54:19 [:115:RunBenchmark] INFO  - nvm_write_prob : 1.000000
+2026-10-18 09:54:19 [:116:RunBenchmark] INFO  - enable_nvm_buf_pool : 1
+2026-10-18 09:54:19 [:117:RunBenchmark] INFO  - bp_mode : DRAM_NVM_SSD
+2026-10-18 09:54:19 [:118:RunBenchmark] INFO  - enable_direct_io : 1
+2026-10-18 09:54:19 [:119:RunBenchmark] INFO  - enable_annealing : 0
+2026-10-18 09:54:19 [:120:RunBenchmark] INFO  - enable_hymem : 0
+2026-10-18 09:54:19 [:121:RunBenchmark] INFO  - nvm_block_size : 16384
+ConcurrentBufferManager::Init nvm_heap_file_path /mnt/pmem1/pkonrad/spitfire_buf//nvm/heapfile
+ConcurrentBufferManager::Init wal_file_path 
+2026-10-18 09:54:19 [:167:RunBenchmark] INFO  - Loading database from scratch
+2026-10-18 09:56:45 [:203:LoadYCSBDatabase] INFO  - database table loading time = 145931.000000 ms
+2026-10-18 09:56:45 [:206:LoadYCSBDatabase] INFO  - user count = 512000
+2026-10-18 09:57:45 [:182:RunWarmupWorkload] INFO  - Warmed up
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2079442.700000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2079192.700000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2086506.600000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2085983.400000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2092810.000000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2085159.500000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2087340.200000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2092466.700000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2093132.500000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2087406.300000
+2026-10-18 09:59:45 [:362:RunWorkload] INFO  - 2092730.900000
+2026-10-18 09:59:45 [:401:RunWorkload] INFO  - M3 decode_calls=0 bytes_read=0 dict_lookups=0 decode_ns=0
+2026-10-18 09:59:45 [:412:RunWorkload] INFO  - Buffer Manager Stats:
+nvm_to_dram              146750.406MB
+dram_to_nvm              22977.406MB
+nvm_to_ssd               0.000MB
+dram_to_ssd              0.000MB
+ssd_to_dram              0.000MB
+ssd_to_nvm               0.000MB
+direct_nvm_write         0.000MB
+data_allocated_dram      146750.406MB
+data_allocated_nvm       0.000MB
+nvm_to_dram_time         47.131s
+dram_to_nvm_time         12.509s
+nvm_to_ssd_time          0.000s
+dram_to_ssd_time         0.000s
+ssd_to_dram_time         0.000s
+ssd_to_nvm_time          0.000s
+dram_evictions           9392026
+nvm_evictions            0
+mini_page_promotions     0
+hits_on_dram             33027695
+hits_on_nvm              9392121
+buf_gets                 42419816
+ssd_reads                0
+ssd_writes               0
+num_pages_allocated      76185
+database_size            1190.391MB
+
+# dram_pids    7480
+# nvm_pids     76185
+# merged_pids  76185
+inclusivity    0.098182
+----dram_buf_replacer----
+mini pages: 0
+full pages: 7480
+page slots: 7480
+bytes:      122552320
+cap_bytes:  122552320
+----dram_buf_replacer----
+
+----nvm_buf_replacer----
+mini pages: 0
+full pages: 76185
+page slots: 90000
+bytes:      1248215040
+cap_bytes:  1474560000
+----nvm_buf_replacer----
+
+
+2026-10-18 09:59:45 [:327:WriteOutput] INFO  - ----------------------------------------------------------
+2026-10-18 09:59:45 [:337:WriteOutput] INFO  - 512 1 10 0.000000 0.000000 :: 2081813.516667 2085759.766667 0.000000 0
