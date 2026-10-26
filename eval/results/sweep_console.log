@@ -1,0 +1,125 @@
+Campaign: 3 modes x 6 cardinalities x 5 reps = 90 runs
+Output:   /vol2/pkonrad/results/sweep_20260808_1445
+
+[  1/ 90] card=10     rep=1 mode=off tries=1 OK   run=2067661.500000 (3m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1458929 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1459091 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[  2/ 90] card=10     rep=1 mode=A   tries=3 OK   run=618748.600000  (13m elapsed)
+[  3/ 90] card=10     rep=1 mode=B   tries=1 OK   run=4096295.850000 (16m elapsed)
+[  4/ 90] card=10     rep=2 mode=off tries=1 OK   run=2086048.800000 (19m elapsed)
+[  5/ 90] card=10     rep=2 mode=A   tries=1 OK   run=1058009.200000 (23m elapsed)
+[  6/ 90] card=10     rep=2 mode=B   tries=1 OK   run=4589579.400000 (26m elapsed)
+[  7/ 90] card=10     rep=3 mode=off tries=1 OK   run=2077760.500000 (29m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1459789 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[  8/ 90] card=10     rep=3 mode=A   tries=2 OK   run=1163510.000000 (36m elapsed)
+[  9/ 90] card=10     rep=3 mode=B   tries=1 OK   run=4389774.100000 (39m elapsed)
+[ 10/ 90] card=10     rep=4 mode=off tries=1 OK   run=2069787.050000 (42m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1460196 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1460284 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1460378 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1460467 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 11/ 90] card=10     rep=4 mode=A   tries=5 OK   run=1056707.500000 (59m elapsed)
+[ 12/ 90] card=10     rep=4 mode=B   tries=1 OK   run=4374002.300000 (62m elapsed)
+[ 13/ 90] card=10     rep=5 mode=off tries=1 OK   run=2072147.550000 (65m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1460872 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 14/ 90] card=10     rep=5 mode=A   tries=2 OK   run=1119104.800000 (72m elapsed)
+[ 15/ 90] card=10     rep=5 mode=B   tries=1 OK   run=4214810.200000 (75m elapsed)
+[ 16/ 90] card=100    rep=1 mode=off tries=1 OK   run=2076566.750000 (79m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1461271 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1461359 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 17/ 90] card=100    rep=1 mode=A   tries=3 OK   run=1050006.100000 (89m elapsed)
+[ 18/ 90] card=100    rep=1 mode=B   tries=1 OK   run=4125034.700000 (92m elapsed)
+[ 19/ 90] card=100    rep=2 mode=off tries=1 OK   run=2089099.100000 (95m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1461899 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 20/ 90] card=100    rep=2 mode=A   tries=2 OK   run=584569.800000  (102m elapsed)
+[ 21/ 90] card=100    rep=2 mode=B   tries=1 OK   run=4369037.550000 (105m elapsed)
+[ 22/ 90] card=100    rep=3 mode=off tries=1 OK   run=2072498.750000 (108m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1462230 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 23/ 90] card=100    rep=3 mode=A   tries=2 OK   run=1305981.950000 (115m elapsed)
+[ 24/ 90] card=100    rep=3 mode=B   tries=1 OK   run=4119052.800000 (118m elapsed)
+[ 25/ 90] card=100    rep=4 mode=off tries=1 OK   run=2073042.300000 (121m elapsed)
+[ 26/ 90] card=100    rep=4 mode=A   tries=1 OK   run=1012697.600000 (125m elapsed)
+[ 27/ 90] card=100    rep=4 mode=B   tries=1 OK   run=3822102.850000 (128m elapsed)
+[ 28/ 90] card=100    rep=5 mode=off tries=1 OK   run=2061571.050000 (131m elapsed)
+[ 29/ 90] card=100    rep=5 mode=A   tries=1 OK   run=963301.600000  (134m elapsed)
+[ 30/ 90] card=100    rep=5 mode=B   tries=1 OK   run=4072370.750000 (137m elapsed)
+[ 31/ 90] card=1000   rep=1 mode=off tries=1 OK   run=2582230.550000 (141m elapsed)
+[ 32/ 90] card=1000   rep=1 mode=A   tries=1 OK   run=1197374.750000 (144m elapsed)
+[ 33/ 90] card=1000   rep=1 mode=B   tries=1 OK   run=4985642.400000 (147m elapsed)
+[ 34/ 90] card=1000   rep=2 mode=off tries=1 OK   run=2573719.650000 (150m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1464476 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1464555 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 35/ 90] card=1000   rep=2 mode=A   tries=3 OK   run=1132325.600000 (160m elapsed)
+[ 36/ 90] card=1000   rep=2 mode=B   tries=1 OK   run=4793717.450000 (164m elapsed)
+[ 37/ 90] card=1000   rep=3 mode=off tries=1 OK   run=2566247.000000 (167m elapsed)
+[ 38/ 90] card=1000   rep=3 mode=A   tries=1 OK   run=1246983.900000 (170m elapsed)
+[ 39/ 90] card=1000   rep=3 mode=B   tries=1 OK   run=4917937.000000 (173m elapsed)
+[ 40/ 90] card=1000   rep=4 mode=off tries=1 OK   run=2559220.200000 (176m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1465226 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1465306 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 41/ 90] card=1000   rep=4 mode=A   tries=3 OK   run=1267207.700000 (187m elapsed)
+[ 42/ 90] card=1000   rep=4 mode=B   tries=1 OK   run=4820282.000000 (190m elapsed)
+[ 43/ 90] card=1000   rep=5 mode=off tries=1 OK   run=2567448.150000 (193m elapsed)
+[ 44/ 90] card=1000   rep=5 mode=A   tries=1 OK   run=633756.300000  (196m elapsed)
+[ 45/ 90] card=1000   rep=5 mode=B   tries=1 OK   run=4902365.950000 (199m elapsed)
+[ 46/ 90] card=10000  rep=1 mode=off tries=1 OK   run=2595680.250000 (202m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1465903 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 47/ 90] card=10000  rep=1 mode=A   tries=2 OK   run=1157595.050000 (209m elapsed)
+[ 48/ 90] card=10000  rep=1 mode=B   tries=1 OK   run=4520522.050000 (212m elapsed)
+[ 49/ 90] card=10000  rep=2 mode=off tries=1 OK   run=2566090.400000 (215m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1466231 Segmentation fault      (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 50/ 90] card=10000  rep=2 mode=A   tries=2 OK   run=1104475.350000 (222m elapsed)
+[ 51/ 90] card=10000  rep=2 mode=B   tries=1 OK   run=4510438.450000 (225m elapsed)
+[ 52/ 90] card=10000  rep=3 mode=off tries=1 OK   run=2565252.100000 (229m elapsed)
+[ 53/ 90] card=10000  rep=3 mode=A   tries=1 OK   run=1169891.650000 (232m elapsed)
+[ 54/ 90] card=10000  rep=3 mode=B   tries=1 OK   run=4482077.400000 (235m elapsed)
+[ 55/ 90] card=10000  rep=4 mode=off tries=1 OK   run=2578552.800000 (238m elapsed)
+[ 56/ 90] card=10000  rep=4 mode=A   tries=1 OK   run=1094187.600000 (242m elapsed)
+[ 57/ 90] card=10000  rep=4 mode=B   tries=1 OK   run=4448635.650000 (245m elapsed)
+[ 58/ 90] card=10000  rep=5 mode=off tries=1 OK   run=2574971.500000 (248m elapsed)
+[ 59/ 90] card=10000  rep=5 mode=A   tries=1 OK   run=1122483.050000 (251m elapsed)
+[ 60/ 90] card=10000  rep=5 mode=B   tries=1 OK   run=4552625.800000 (254m elapsed)
+[ 61/ 90] card=100000 rep=1 mode=off tries=1 OK   run=2585691.350000 (258m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1467381 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1467461 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1467535 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 62/ 90] card=100000 rep=1 mode=A   tries=4 OK   run=954081.600000  (271m elapsed)
+[ 63/ 90] card=100000 rep=1 mode=B   tries=1 OK   run=3906316.350000 (274m elapsed)
+[ 64/ 90] card=100000 rep=2 mode=off tries=1 OK   run=2566010.500000 (278m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1467901 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 65/ 90] card=100000 rep=2 mode=A   tries=2 OK   run=992211.950000  (285m elapsed)
+[ 66/ 90] card=100000 rep=2 mode=B   tries=1 OK   run=3922652.800000 (288m elapsed)
+[ 67/ 90] card=100000 rep=3 mode=off tries=1 OK   run=2576342.250000 (291m elapsed)
+[ 68/ 90] card=100000 rep=3 mode=A   tries=1 OK   run=961865.750000  (294m elapsed)
+[ 69/ 90] card=100000 rep=3 mode=B   tries=1 OK   run=3990014.500000 (297m elapsed)
+[ 70/ 90] card=100000 rep=4 mode=off tries=1 OK   run=2584880.400000 (301m elapsed)
+[ 71/ 90] card=100000 rep=4 mode=A   tries=1 OK   run=511462.600000  (304m elapsed)
+[ 72/ 90] card=100000 rep=4 mode=B   tries=1 OK   run=3887599.100000 (307m elapsed)
+[ 73/ 90] card=100000 rep=5 mode=off tries=1 OK   run=2569614.700000 (310m elapsed)
+[ 74/ 90] card=100000 rep=5 mode=A   tries=1 OK   run=1016577.500000 (314m elapsed)
+[ 75/ 90] card=100000 rep=5 mode=B   tries=1 OK   run=4230443.200000 (317m elapsed)
+[ 76/ 90] card=500000 rep=1 mode=off tries=1 OK   run=2584251.200000 (320m elapsed)
+[ 77/ 90] card=500000 rep=1 mode=A   tries=1 OK   run=1309460.600000 (324m elapsed)
+[ 78/ 90] card=500000 rep=1 mode=B   tries=1 OK   run=3761687.850000 (327m elapsed)
+[ 79/ 90] card=500000 rep=2 mode=off tries=1 OK   run=2574838.000000 (330m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1469230 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1469306 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1469381 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1469460 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1469534 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 80/ 90] card=500000 rep=2 mode=A   tries=6 OK   run=954401.950000  (351m elapsed)
+[ 81/ 90] card=500000 rep=2 mode=B   tries=1 OK   run=3935423.650000 (354m elapsed)
+[ 82/ 90] card=500000 rep=3 mode=off tries=1 OK   run=2578774.750000 (357m elapsed)
+[ 83/ 90] card=500000 rep=3 mode=A   tries=1 OK   run=1011560.000000 (361m elapsed)
+[ 84/ 90] card=500000 rep=3 mode=B   tries=1 OK   run=3827207.000000 (364m elapsed)
+[ 85/ 90] card=500000 rep=4 mode=off tries=1 OK   run=2465633.250000 (367m elapsed)
+[ 86/ 90] card=500000 rep=4 mode=A   tries=1 OK   run=712012.700000  (371m elapsed)
+[ 87/ 90] card=500000 rep=4 mode=B   tries=1 OK   run=3896115.650000 (374m elapsed)
+[ 88/ 90] card=500000 rep=5 mode=off tries=1 OK   run=2550859.850000 (377m elapsed)
+/vol2/pkonrad/sweep.sh: line 40: 1472504 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+/vol2/pkonrad/sweep.sh: line 40: 1472602 Aborted                 (core dumped) "$BUILD/ycsb" -k $SCALE -T $DRAM_PAGES -Y $NVM_PAGES -I -U $WARMUP -s -B 1 -P "$NVM" -D "$DB" -u 0 -d $DURATION -p $PROFILE -C "$1" -K "$2" > "$3" 2>&1
+[ 89/ 90] card=500000 rep=5 mode=A   tries=3 OK   run=965651.050000  (388m elapsed)
+[ 90/ 90] card=500000 rep=5 mode=B   tries=1 OK   run=3752878.400000 (391m elapsed)
+
+Done. 0 of 90 runs failed permanently.
+Summary: /vol2/pkonrad/results/sweep_20260808_1445/summary.csv
